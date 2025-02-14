@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { TbBounceRightFilled } from "react-icons/tb";
 import { FaCheck, FaTimes, FaAngleDown } from "react-icons/fa";
 const AttendenceManage = () => {
-  const [selectedOption, setSelectedOption] = useState("")
-  const [newStatus, setNewStatus] = useState([])
+  const [selectedView, setSelectedView] = useState("attendance")
+  const [attendanceData, setAttendanceData] = useState([])
+  const [leaveData, setLeaveData] = useState([])
   
 
   useEffect (() => {
 
-    setNewStatus([
+    setLeaveData([
       {
         id:1,
         name:"Yasin",
@@ -43,7 +44,7 @@ const AttendenceManage = () => {
       },
     ]);
 
-    setSelectedOption([
+    setAttendanceData([
       {
         id: 1,
         name: "Yasin",
@@ -105,12 +106,12 @@ const AttendenceManage = () => {
   }
 
   const handleLeaveApproval = (employeId, newStatus) => {
-    setNewStatus((preventHandle) =>
-      preventHandle.map((request) =>
+    setLeaveData((preveData) =>
+      preveData.map((request) =>
         request.id === employeId ? { ...request, status: newStatus} : request
       )
-    )
-  }
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -123,8 +124,8 @@ const AttendenceManage = () => {
           </label>
           <select
             className="border-2 border-gray-300 text-center px-4 py-2 rounded-md hover:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            value={selectedOption}
-            onChange={(e) => setSelectedOption(e.target.value)}
+            value={selectedView}
+            onChange={(e) => setSelectedView(e.target.value)}
             name=""
             id=""
           >
@@ -137,7 +138,8 @@ const AttendenceManage = () => {
 
       {/* Attendance Records Section */}
       <div className="flex justify-center">
-        {selectedOption == "attendance" ? (<section className="w-full max-w-6xl">
+        {selectedView === "attendance" ? (
+          <section className="w-full max-w-6xl">
           <h2 className="font-medium text-2xl text-gray-700 mb-4">
             Attendance Records
           </h2>
@@ -152,7 +154,7 @@ const AttendenceManage = () => {
                 </tr>
               </thead>
               <tbody>
-                {selectedOption.map((employee) => (
+                {attendanceData.map((employee) => (
                   <tr
                     key={employee.id}
                     className="text-center text-gray-700 hover:bg-gray-100 transition-colors"
@@ -178,7 +180,8 @@ const AttendenceManage = () => {
               </tbody>
             </table>
           </div>
-        </section>) : (<section className="w-full max-w-6xl">
+        </section>) : (
+          <section className="w-full max-w-6xl">
           <h2 className="font-medium text-2xl text-gray-700 mb-4">
             Leave Records
           </h2>
@@ -195,7 +198,7 @@ const AttendenceManage = () => {
                 </tr>
               </thead>
               <tbody>
-                {newStatus.map((employe) => (
+                {leaveData.map((employe) => (
                   <tr
                     key={employe.id}
                     className="text-center text-gray-700 hover:bg-gray-100 transition-colors"
