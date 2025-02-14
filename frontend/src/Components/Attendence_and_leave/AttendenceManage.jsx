@@ -24,7 +24,7 @@ const AttendenceManage = () => {
         leaveType: "For Enjoy",
         from: "15-02-2025",
         to: "20-02-2025",
-        status: "Approved"
+        status: "Pending"
       },
       {
         id:3,
@@ -32,7 +32,7 @@ const AttendenceManage = () => {
         leaveType: "For Enjoy",
         from: "15-02-2025",
         to: "20-02-2025",
-        status: "Rejected"
+        status: "Pending"
       },
       {
         id:4,
@@ -40,7 +40,7 @@ const AttendenceManage = () => {
         leaveType: "For Enjoy",
         from: "15-02-2025",
         to: "20-02-2025",
-        status: "Approved"
+        status: "Pending"
       },
     ]);
 
@@ -225,12 +225,12 @@ const AttendenceManage = () => {
                         <div className="flex flex-nowrap gap-3 justify-center items-center">
                           <button 
                           className="bg-green-600 shadow-green-400 py-2 px-4 rounded-full text-white flex flex-nowrap items-center justify-center gap-1 cursor-pointer"
-                          onChange={() => handleLeaveApproval(employe.id, "Approved")}
+                          onClick={() => handleLeaveApproval(employe.id, "Approved")}
                           ><TbBounceRightFilled />Approve
                           </button>
                           <button 
                           className="bg-red-600 shadow-red-400 py-2 px-4 rounded-full text-white flex flex-nowrap items-center justify-center gap-1 cursor-pointer"
-                          onChange={() => handleLeaveApproval(employe.id, "Rejected")}
+                          onClick={() => handleLeaveApproval(employe.id, "Rejected")}
                           >
                           <FaTimes />Reject
                           </button>
