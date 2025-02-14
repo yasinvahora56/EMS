@@ -12,7 +12,7 @@ const AttendenceManage = () => {
     setLeaveData([
       {
         id:1,
-        name:"Yasin",
+        name:"Yasinss",
         leaveType: "For Enjoy",
         from: "15-02-2025",
         to: "20-02-2025",
