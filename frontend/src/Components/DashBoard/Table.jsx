@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import logo from '../Images/logo.jpg'
 import CreatNewBtn from "./CreatNewBtn";
 import { Search } from "lucide-react";
+import ThreeBlockes from "./threeBlockes";
 
 const Table = () => {
   const data = [
@@ -42,7 +43,8 @@ const Table = () => {
 
   return (
     <>
-    <div className="absolute left-80 top-10 max-w-md mx-auto">
+    <ThreeBlockes/>
+    <div className="absolute left-80 top-80 max-w-md mx-auto">
       <input
         className="w-full py-2 px-4 pl-10 bg-gray-100 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all shadow-sm"
         type="text"
@@ -54,7 +56,7 @@ const Table = () => {
       </div>
     </div>
     <CreatNewBtn/>
-    <div className="absolute left-80 top-25">
+    <div className="absolute left-80 top-90">
     <div className="w-3/4 mt-10">
       <div className="items-left justify-left">
       <h1 className="text-2xl font-bold mb-4">Employee Table</h1>

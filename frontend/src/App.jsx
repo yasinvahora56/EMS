@@ -7,9 +7,9 @@ function App() {
 
   return (
     <>
-      {/* <DashBoard/> */}
+      <DashBoard/>
       {/* <AttendenceManage/> */}
-      <Profile/>
+      {/* <Profile/> */}
     </>
   )
 }
