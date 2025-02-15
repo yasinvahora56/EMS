@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import logo from '../Images/logo.jpg'
-import CreatNewBtn from "./CreatNewBtn";
+import CreatNewBtn from "../DashBoard/CreatNewBtn";
 import { Search } from "lucide-react";
-const Table = ({expend, ToggleModal}) => {
+
+const SalaryTable = ({expend, ToggleModal}) => {
   const data = [
     {
       id: 1,
@@ -47,11 +48,9 @@ const Table = ({expend, ToggleModal}) => {
   ];
 
   const [search, setSearch] = useState('');
- 
-
   return (
     <>
-    {expend && (
+      {expend && (
       <>
        <div className="absolute left-80 top-80 max-w-md mx-auto">
       <input
@@ -64,16 +63,16 @@ const Table = ({expend, ToggleModal}) => {
         <Search className="w-5 h-5" />
       </div>
     </div>
-    <CreatNewBtn/>
+    {/* <CreatNewBtn/> */}
     <div className="absolute left-80 top-90">
     <div className="w-3/4 mt-10">
       <div className="items-left justify-left">
-      <h1 className="text-2xl font-bold mb-4">Employee Table</h1>
+      <h1 className="text-2xl font-bold mb-4">Salery Table</h1>
       </div>
       <div className="rounded-lg">
-        <table className="table-auto w-full border-collapse border border-gray-300 text-left">
+        <table className="table-auto w-full border-collapse border border-blue-500 text-left">
           <thead>
-            <tr className="bg-gray-100">
+            <tr className="bg-blue-500 text-white">
               <th className="border border-gray-300 px-4 py-2">Id</th>
               <th className="border border-gray-300 px-4 py-2">Image</th>
               <th className="border border-gray-300 px-4 py-2">Name</th>
@@ -127,10 +126,8 @@ const Table = ({expend, ToggleModal}) => {
     </div>
     </>
     )}
-
-   
     </>
-  );
-};
+  )
+}
 
-export default Table;
+export default SalaryTable

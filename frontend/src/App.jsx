@@ -8,7 +8,6 @@ function App() {
   return (
     <>
       <DashBoard/>
-      {/* <AttendenceManage/> */}
       {/* <Profile/> */}
     </>
   )
