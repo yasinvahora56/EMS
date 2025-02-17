@@ -1,6 +1,5 @@
 import React from 'react'
-import SideNav from './SideNav'
-import Table from './Table'
+import Employee from '../Employee/Employee';
 
 import OpenAttendanceModal from '../AttendenceViewBtn/OpenClickModal'
 import OpenClickModal from '../EmployeeViewBtn/OpenClickModal'
@@ -11,10 +10,9 @@ const DashBoard = () => {
   return (
     <>
     {/* <AttendenceManage/> */}
-    {/* <Table/> */}
+    {/* <Employee/> */}
     <OpenSaleryTable/>
     <OpenAttendanceModal/>
-    <OpenClickModal/>
     {/* <SideNav/> */}
     </>
   )

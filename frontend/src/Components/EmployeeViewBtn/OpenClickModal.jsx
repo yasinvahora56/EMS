@@ -1,8 +1,9 @@
 
 import { useState } from 'react';
 import AttendenceManage from '../Attendence_and_leave/AttendenceManage'
-import Table from '../DashBoard/Table'
+
 import TopThreeBtn from './TopThreeBtn'
+import Employee from '../Employee/Employee';
 
 const OpenClickModal = () => {
 
@@ -16,7 +17,7 @@ const OpenClickModal = () => {
   return (
     <div>
       <TopThreeBtn expend={expend} ToggleModal={ToggleModal}/>
-      <Table expend={expend} ToggleModal={ToggleModal}/>
+      <Employee expend={expend} ToggleModal={ToggleModal}/>
     </div>
   )
 }
