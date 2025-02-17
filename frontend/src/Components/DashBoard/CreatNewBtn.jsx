@@ -17,7 +17,7 @@ const CreatNewBtn = () => {
 
     <>
     <div>
-        <button className="absolute top-80 right-100 px-3 py-2 bg-gray-50 border-1 text-black rounded-md cursor-pointer" onClick={ToggleModal}>Add New</button>
+        <button className="bg-blue-700 text-white px-4 py-2 rounded-4xl cursor-pointer" onClick={ToggleModal}>Add New</button>
     </div>
 
     {modal && (
