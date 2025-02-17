@@ -4,50 +4,70 @@ import CreatNewBtn from "../DashBoard/CreatNewBtn";
 import { Search } from "lucide-react";
 
 const SalaryTable = ({expend, ToggleModal}) => {
-  const data = [
-    {
-      id: 1,
-      image: logo, // Replace with actual image URLs
-      name: "Yasin",
-      email: "yasin@gmail.com.com",
-      designation: "Developer",
-      gender: "Male",
-      course: "B.Tech",
-      joinDate: "2023-01-15",
-    },
-    {
-      id: 2,
-      image: logo,
-      name: "Adnan",
-      email: "adnan@gmail.com",
-      designation: "Designer",
-      gender: "Female",
-      course: "B.Sc",
-      joinDate: "2022-05-10",
-    },
-    {
-      id: 3,
-      image: logo,
-      name: "Raiyyan",
-      email: "raiyyan@gmail.com",
-      designation: "Marketing",
-      gender: "Male",
-      course: "MBA",
-      joinDate: "2021-09-20",
-    },
-    {
-      id: 4,
-      image: logo,
-      name: "Asad",
-      email: "asad@gmail.com",
-      designation: "Marketing",
-      gender: "Male",
-      course: "MBA",
-      joinDate: "2021-09-20",
-    },
-  ];
 
   const [search, setSearch] = useState('');
+  const [paidSalary, setSalaryPaid] = useState('')
+
+  useState (() => {
+    setSalaryPaid([
+      {
+        id: 1,
+        image: logo, // Replace with actual image URLs
+        name: "Yasin",
+        email: "yasin@gmail.com.com",
+        designation: "Developer",
+        gender: "Male",
+        salary: "100000",
+        status:"unpaid"
+      },
+      {
+        id: 2,
+        image: logo,
+        name: "Adnan",
+        email: "adnan@gmail.com",
+        designation: "Designer",
+        gender: "Female",
+        salary: "100000",
+        status:"unpaid"
+      },
+      {
+        id: 3,
+        image: logo,
+        name: "Raiyyan",
+        email: "raiyyan@gmail.com",
+        designation: "Marketing",
+        gender: "Male",
+        salary: "100000",
+        status:"unpaid"
+      },
+      {
+        id: 4,
+        image: logo,
+        name: "Asad",
+        email: "asad@gmail.com",
+        designation: "Marketing",
+        gender: "Male",
+        salary: "100000",
+        status:"unpaid"
+      },
+    ]);
+  })
+
+  const handleApproval = (employeId, setStatus) => {
+
+    setSalaryPaid((preveData) =>
+      preveData.map((request) =>
+        request.id === employeId ? { ...request, status: setStatus} : request
+      )
+    );
+
+
+  } 
+
+
+  
+
+  
   return (
     <>
       {expend && (
@@ -79,17 +99,18 @@ const SalaryTable = ({expend, ToggleModal}) => {
               <th className="border border-gray-300 px-4 py-2">Email</th>
               <th className="border border-gray-300 px-4 py-2">Designation</th>
               <th className="border border-gray-300 px-4 py-2">Gender</th>
-              <th className="border border-gray-300 px-4 py-2">Course</th>
-              <th className="border border-gray-300 px-4 py-2">Join Date</th>
+              <th className="border border-gray-300 px-4 py-2">Salary</th>
+              <th className="border border-gray-300 px-4 py-2">Status</th>
+              <th className="border border-gray-300 px-4 py-2">Action</th>
             </tr>
           </thead>
           <tbody>
-            {data.filter((employee) => {
+            {paidSalary.filter((employee) => {
               return search.toLowerCase() === '' ? employee : employee.name.toLowerCase().includes(search.toLowerCase());
             }).map((employee) => (
               <tr
                 key={employee.id}
-                className="hover:bg-gray-100 transition-colors"
+                className="hover:bg-gray-100 transition-colors p-4"
               >
                 <td className="border border-gray-300 px-4 py-2">{employee.id}</td>
                 <td className="border border-gray-300 px-4 py-2">
@@ -112,10 +133,15 @@ const SalaryTable = ({expend, ToggleModal}) => {
                   {employee.gender}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  {employee.course}
+                  {employee.salary}
                 </td>
-                <td className="border border-gray-300 px-4 py-2 whitespace-nowrap">
-                  {employee.joinDate}
+                <td className="border border-gray-300 px-4 py-2">
+                  {handleApproval ? employee.status : "Unpaid"}
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  <button className="bg-green-700 px-4 py-2 cursor-pointer rounded-md text-white shadow"
+                  onClick={() => handleApproval(employee.id, "Paid")}
+                  >Paid</button>
                 </td>
               </tr>
             ))}
