@@ -26,7 +26,7 @@ const SalaryTable = ({expend, ToggleModal}) => {
         name: "Adnan",
         email: "adnan@gmail.com",
         designation: "Designer",
-        gender: "Female",
+        gender: "male",
         salary: "100000",
         status:"unpaid"
       },
