@@ -1,4 +1,8 @@
 import { CheckCircleIcon, ClockIcon, XCircleIcon } from "lucide-react";
+import { FaHourglassHalf } from "react-icons/fa";
+import { AiFillCheckCircle } from "react-icons/ai";
+import { AiFillClockCircle } from "react-icons/ai";
+
 
 
 const Attandance = () => {
@@ -32,6 +36,49 @@ const Attandance = () => {
             date: "13-02-2025",
             status: "Present",
           },
+          {
+            id: 5,
+            name: "Rahil",
+            time: "10:25:50 AM",
+            date: "13-02-2025",
+            status: "Half Day",
+          },
+          {
+            id: 6,
+            name: "Muhammad",
+            time: "10:25:50 AM",
+            date: "13-02-2025",
+            status: "Present",
+          },
+          
+          {
+            id: 7,
+            name: "Asad",
+            time: "10:25:50 AM",
+            date: "13-02-2025",
+            status: "Present",
+          },
+          {
+            id: 8,
+            name: "Rahil",
+            time: "10:25:50 AM",
+            date: "13-02-2025",
+            status: "Half Day",
+          },
+          {
+            id: 9,
+            name: "Muhammad",
+            time: "10:25:50 AM",
+            date: "13-02-2025",
+            status: "Present",
+          },
+          {
+            id: 10,
+            name: "Subhan",
+            time: "10:25:50 AM",
+            date: "13-02-2025",
+            status: "Absent",
+          },
     ]
 
 
@@ -50,15 +97,62 @@ const Attandance = () => {
 
       const statusConfig = {
         Present: { bg: "bg-green-100 text-green-700", icon: <CheckCircleIcon className="w-5 h-5 inline-block mr-1" /> },
+        Late: { bg: "bg-green-100 text-green-700", icon: <CheckCircleIcon className="w-5 h-5 inline-block mr-1" /> },
+        "Half Day": { bg: "bg-amber-100 text-amber-700", icon: <CheckCircleIcon className="w-5 h-5 inline-block mr-1" /> },
         Absent: { bg: "bg-red-100 text-red-700", icon: <XCircleIcon className="w-5 h-5 inline-block mr-1" /> },
         "On Leave": { bg: "bg-yellow-100 text-yellow-700", icon: <ClockIcon className="w-5 h-5 inline-block mr-1" /> },
       };
 
+      const AttandanceData = [
+        {
+          number:3,
+          type:"Late",
+          icon:<FaHourglassHalf/>,
+        },
+        {
+          number:4,
+          type:"Present",
+          icon: <AiFillCheckCircle color="green"/>,
+        },
+        {
+          number:2,
+          type:"Absent",
+          icon: <AiFillCheckCircle color="red"/>,
+        },
+        {
+          number:1,
+          type:"Half Day",
+          icon: <AiFillClockCircle/>,
+        },
+      ]
+
 
   return (
-    <div className="flex justify-center mt-10">
-    <section className="w-full max-w-5xl">
-      <h2 className="font-semibold text-2xl text-gray-700 mb-6 text-start">📅 Attendance Records</h2>
+    <div className="flex flex-col gap-4 items-center justify-center">
+      <h1 className="font-bold text-2xl my-4 flex">18/02/2025<span className="mx-2">Tuesday</span></h1>
+    <div className="flex flex-row gap-4 mb-4">
+
+{AttandanceData.map((data) => 
+<div className="w-60 h-20">
+
+<div className={`flex ${statusConfig[data.type]?.bg} p-3 flex-row justify-between items-center gap-6 rounded-lg`}>
+<div className="">
+<h1 className="font-bold text-2xl">{data.number}</h1>
+<p className="font-normal text-xl">{data.type}</p>
+</div>
+<div>
+ <div className="font-bold text-2xl">{data.icon}</div>
+</div>
+</div>
+
+</div>
+)}
+
+
+</div>
+    <div className="w-250 flex flex-col">     
+    <section className="">
+      <h2 className="font-bold text-2xl text-black mb-6 text-start">📅 Attendance Records</h2>
 
       <div className="overflow-hidden rounded-xl shadow-lg bg-white border border-gray-200">
         <table className="w-full border-collapse">
@@ -86,6 +180,7 @@ const Attandance = () => {
         </table>
       </div>
     </section>
+  </div>
   </div>
   )
 }

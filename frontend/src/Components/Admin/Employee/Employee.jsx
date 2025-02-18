@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import logo from '../Images/logo.jpg'
-import CreatNewBtn from "../DashBoard/CreatNewBtn";
+import CreatNewBtn from "./CreatNewBtn";
 import { Plus, Search } from "lucide-react";
 const Employee = () => {
   const data = [
