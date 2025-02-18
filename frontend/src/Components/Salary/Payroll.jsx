@@ -69,7 +69,7 @@ const Payroll = () => {
   return (
     <>
 
-<div className="min-h-screen bg-gray-100 py-10 px-8">
+<div className="max-h-screen">
       <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-lg p-6">
         <h1 className="text-3xl font-bold text-gray-800 mb-6">Salary Table</h1>
         
@@ -118,7 +118,7 @@ const Payroll = () => {
     Paid
   </button>
 </td> */}
-<td className="border border-gray-300 px-4 py-2">
+<td className=" px-4 py-2">
   <button className="bg-gradient-to-r from-green-400 to-green-700 px-6 py-3 cursor-pointer rounded-lg text-white shadow-lg transition-all duration-300 ease-in-out transform hover:scale-110 hover:shadow-2xl"
     onClick={() => handleApproval(employee.id, "Paid")}
   >

@@ -2,7 +2,7 @@ import logo from '../Images/logo.jpg';
 import { Home, User, Settings, LogOut } from 'lucide-react';
 import { Link, Navigate } from "react-router-dom";
 import Profile from '../Profile/Profile';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Setting from '../Images/Setting_Line.png'
 import { enqueueSnackbar } from 'notistack'
 import { useNavigate } from "react-router-dom";
@@ -17,6 +17,16 @@ const SideNav = ({ toggleSidebar }) => {
 
   const [expended, setExpended] = useState(true);
   const navigate = useNavigate();
+
+  // useEffect (() => {
+  //   let timer;
+  //   if(expended) {
+  //       timer = setTimeout(() => {
+  //         setExpended(false);
+  //       }, 5000)
+  //   }
+  //   return () => clearTimeout(timer);
+  // }, [expended])
 
   const expend = () => {
     setExpended(!expended);

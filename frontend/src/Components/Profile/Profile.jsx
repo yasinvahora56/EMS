@@ -20,7 +20,7 @@ const Profile = () => {
     ];
     return (
         <>
-        <div className='flex items-center justify-center min-h-screen'>
+        <div className='flex absolute top-30 left-180  max-h-screen'>
             <div className='bg-white shadow-lg rounded-2xl p-6 max-w-sm text-center'>
                 <h1 className='text-3xl font-bold text-gray-800 mb-4 '>Admin Profile</h1>
                 {Data.map((admin, index) => (
@@ -43,7 +43,7 @@ const Profile = () => {
                             </div>
                         </div>
                         <button 
-                        className='bg-blue-400 w-full px-4 py-2 rounded-full text-white'
+                        className='bg-blue-400 w-full px-4 py-2 rounded-full text-white cursor-pointer'
                         onClick={ToggleModal}
                         >Edit Profile</button>
                     </div>
@@ -95,12 +95,12 @@ const Profile = () => {
                                 </div>
                                 <div className="flex justify-between mt-4">
                                     <button
-                                        className="bg-gray-300 px-4 py-2 rounded-full"
+                                        className="bg-gray-300 px-4 py-2 rounded-full cursor-pointer"
                                         onClick={ToggleModal}
                                     >
                                         Cancel
                                     </button>
-                                    <button className='bg-blue-400 px-4 py-2 rounded-full text-white'>
+                                    <button className='bg-blue-400 px-4 py-2 rounded-full text-white cursor-pointer'>
                                         Save
                                     </button>
                                 </div>
