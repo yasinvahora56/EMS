@@ -150,7 +150,6 @@ const Leave = () => {
   </div>
 </div>
 </div>
-        
     )}
     
     </div>
