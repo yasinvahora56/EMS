@@ -4,7 +4,7 @@ import { CheckCircleIcon } from 'lucide-react';
 
 const Leave = () => {
 
-    const [leaveStatus, setLeaveStatus] = useState();
+    
 
     const LeaveData = [
         {
@@ -89,21 +89,32 @@ const Leave = () => {
         },
     ]
 
+    const [leaveStatus, setLeaveStatus] = useState(LeaveData);
+
     const handleApprove = (employeeId, newStatus) => {
         setLeaveStatus((prevData) =>
-            prevData.map((request) =>
-                request.id === employeeId ? { ...request, status: newStatus} : request
+            prevData.map((leave) =>
+                leave.id === employeeId ? { ...leave, status: newStatus} : leave
             ) 
         )        
+    }
+
+    const statusColor = (status) => {
+        switch (status) {
+            case "Approve":
+                return "text-green-800";
+            case "Reject":
+                return "text-red-600";
+        }
     }
 
 
   return (
     <>
     <h1 className='text-3xl font-bold ml-60 items-center justify-center'>Leave Request</h1>
-    <div className=' ml-60 mt-10 flex flex-wrap gap-4'>
+    <div className='ml-60 mt-10 flex flex-wrap gap-4'>
     
-    {LeaveData.map((leave) => 
+    {leaveStatus.map((leave) => 
 
 <div key={leave.id} className='max-w-60 bg-yellow-100 rounded-md p-3 shadow'>
 
@@ -117,18 +128,25 @@ const Leave = () => {
   </div>
   <div className='flex gap-4 p-4 items-center border-b-1 border-amber-300'>
       <img src={logo} className='w-15 h-15 rounded-full' alt="" />
-      <div>
+      <div className='whitespace-nowrap'>
           <h1 className='font-medium text-lg'>{leave.name}</h1>
           <p>{leave.designation}</p>
       </div>
   </div>
   <div className='pl-4 pt-4 flex gap-3 items-center justify-end '>
-        <button className='bg-amber-300 px-3 py-2 rounded-md cursor-pointer hover:shadow'
-         onClick={() => handleApprove(leave.id, "Reject")}
-         >Reject</button>
-         <button className='bg-amber-300 px-3 py-2 rounded-md cursor-pointer hover:shadow'
-         onClick={() => handleApprove(leave.id, "Approve")}
-         >Approve</button>
+        {leave.status === "" ? (
+            <>
+            <button className='bg-amber-300 px-3 py-2 rounded-md cursor-pointer hover:shadow'
+            onClick={() => handleApprove(leave.id, "Reject")}
+            >Reject</button>
+            <button className='bg-amber-300 px-3 py-2 rounded-md cursor-pointer hover:shadow'
+            onClick={() => handleApprove(leave.id, "Approve")}
+            >Approve</button>
+            </>
+        ):(
+            <p className={`flex items-center justify-center mx-auto font-bold text-xl 
+                ${statusColor(leave.status)}`}>{leave.status}</p>
+        )}
   </div>
 </div>
 </div>

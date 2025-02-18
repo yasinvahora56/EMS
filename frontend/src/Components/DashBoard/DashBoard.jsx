@@ -3,7 +3,6 @@ import Employee from '../Employee/Employee';
 
 import OpenAttendanceModal from '../AttendenceViewBtn/OpenClickModal'
 import OpenClickModal from '../EmployeeViewBtn/OpenClickModal'
-import OpenSaleryTable from '../Salary/SaleryViewBtn/OpenSaleryTable'
 
 
 const DashBoard = () => {
@@ -11,7 +10,7 @@ const DashBoard = () => {
     <>
     {/* <AttendenceManage/> */}
     {/* <Employee/> */}
-    <OpenSaleryTable/>
+   
     <OpenAttendanceModal/>
     {/* <SideNav/> */}
     </>

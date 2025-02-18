@@ -11,6 +11,7 @@ import { SlCalender } from "react-icons/sl";
 import { IoFingerPrint } from "react-icons/io5";
 import { GiTakeMyMoney } from "react-icons/gi";
 import Employee from '../Employee/Employee';
+import Payroll from '../Salary/Payroll';
 
 const SideNav = ({ toggleSidebar }) => {
 
@@ -37,7 +38,7 @@ const SideNav = ({ toggleSidebar }) => {
           {expended && <img src={logo} className="w-15 h-15 rounded-full" alt="Logo" />}
           {expended && <div className='flex flex-col '>
           <h1 className='font-bold text-2xl'>Yasin Vahora</h1>
-          <p className='font-thin'>Devloper</p>
+          <p className='font-thin'>Owner</p>
           </div>
         }
           </div>
@@ -69,7 +70,7 @@ const SideNav = ({ toggleSidebar }) => {
           </li>
           <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
             <GiTakeMyMoney className="w-5 h-5" />
-            {expended && <Link to="/Dashboard" className="font-medium">Payroll</Link>}
+            {expended && <Link to="/Payroll" className="font-medium">Payroll</Link>}
           </li>
           <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
             <ImProfile className="w-5 h-5" />
