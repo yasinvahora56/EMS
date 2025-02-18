@@ -1,13 +1,12 @@
 
-import AttendenceManage from "./Components/Attendence_and_leave/AttendenceManage"
-import DashBoard from "./Components/DashBoard/DashBoard"
-import Employee from "./Components/Employee/Employee"
-import Profile from "./Components/Profile/Profile"
+import DashBoard from "./Components/Admin/DashBoard/DashBoard"
+import Employee from "./Components/Admin/Employee/Employee"
+import Profile from "./Components/Admin/Profile/Profile"
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Attandance from "./Components/Attandance/Attandance"
-import SideNav from "./Components/Sidebar/SideNav"
-import Leave from "./Components/Leave/Leave"
-import Payroll from "./Components/Salary/Payroll"
+import Attandance from "./Components/Admin/Attandance/Attandance"
+import SideNav from "./Components/Admin/Sidebar/SideNav"
+import Leave from "./Components/Admin/Leave/Leave"
+import Payroll from "./Components/Admin/Salary/Payroll"
 
 
 function App() {
