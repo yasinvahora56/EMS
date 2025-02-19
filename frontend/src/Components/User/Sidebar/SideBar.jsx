@@ -1,4 +1,4 @@
-import logo from '../Images/logo.jpg';
+import asad_master from '../Images/asad_master.jpg';
 import { Home, User, LogOut } from 'lucide-react';
 import { Link } from "react-router-dom";
 import { useState } from 'react';
@@ -37,9 +37,10 @@ const SideBar = ({ toggleSidebar }) => {
 
   const EmployeeData = [
     {
+      id:1,
       name:"Asad Master",
       designation:"Devloper",
-      logo: logo
+      logo: asad_master,
     },
   ]
 
@@ -50,11 +51,9 @@ const SideBar = ({ toggleSidebar }) => {
           
         <div className="p-4 pb-8 flex justify-between items-center border-b border-blue-300">
             {EmployeeData.map((employee) =>
-
-             
                 <div className='flex flex-row gap-2'>
-          {expended && <img src={employee.logo} className="w-15 h-15 rounded-full" alt="Logo" />}
-          {expended && <div className='flex flex-col '>
+          {expended && <img  src={employee.logo} className="w-14 h-12 rounded-full" alt="Logo" />}
+          {expended && <div className='flex flex-col ' key={employee.id}>
           <h1 className='font-bold text-2xl'>{employee.name}</h1>
           <p className='font-thin'>{employee.designation}</p>
           </div>
@@ -75,7 +74,7 @@ const SideBar = ({ toggleSidebar }) => {
         <ul className="flex flex-col mt-4 space-y-2 px-4 ">
           <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
             <Home className="w-5 h-5" />
-            {expended && <Link to="/DashBoard" className="font-medium">Dashboard</Link>}
+            {expended && <Link to="/UserDashBoard" className="font-medium">Dashboard</Link>}
           </li>
           {/* <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
             <User className="w-5 h-5" />
@@ -87,7 +86,7 @@ const SideBar = ({ toggleSidebar }) => {
           </li> */}
           <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
             <SlCalender className="w-5 h-5" />
-            {expended && <Link to="/Leave" className="font-medium">Leave Request</Link>}
+            {expended && <Link to="/LeaveRequest" className="font-medium">Leave Request</Link>}
           </li>
           <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
             <GiTakeMyMoney className="w-5 h-5" />

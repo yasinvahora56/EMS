@@ -39,7 +39,7 @@ const SideNav = ({ toggleSidebar }) => {
   }
 
   return (
-    <aside className="absolute top-0 h-screen">
+    <aside className="absolute top-0 h-screen fixed">
       <nav className={`h-full ${expended ? "w-55" : "w-20"} sidebar flex flex-col bg-white text-black shadow-lg`}>
         {/* Logo Section */}
           
@@ -61,7 +61,7 @@ const SideNav = ({ toggleSidebar }) => {
 
 
         {/* Navigation Links */}
-        <ul className="flex flex-col mt-4 space-y-2 px-4 ">
+        <ul className="flex flex-col mt-4 space-y-2 px-4">
           <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
             <Home className="w-5 h-5" />
             {expended && <Link to="/DashBoard" className="font-medium">Dashboard</Link>}
@@ -87,12 +87,13 @@ const SideNav = ({ toggleSidebar }) => {
             {expended && <Link to="/Profile" className="font-medium">Profile</Link>}
           </li>
         </ul>
-          <ul className='flex flex-col space-y-2 px-4'>
-          <li className={`flex items-center space-x-3 p-2 absolute bottom-17 left-5 rounded-lg hover:bg-black hover:text-white transition-all ${expended && "pr-23"}`}>
+        <div className='fixed mt-150 p-4'>
+        <li className={`flex items-center space-x-3 p-2  left-5 rounded-lg hover:bg-black hover:text-white transition-all ${expended && "pr-23"}`}>
             <LogOut className="w-5 h-5" />
             {expended && <button className="font-medium cursor-pointer">Logout</button>}
           </li>
-          </ul>
+        </div>
+         
 
         {/* Footer Section */}
         <div className="mt-auto p-4 border-t border-blue-300 text-sm text-center">

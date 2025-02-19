@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import logo from '../Images/logo.jpg';
+import asad_master from '../Images/asad_master.jpg';
 
 const UserProfile = () => {
 
@@ -16,6 +17,7 @@ const UserProfile = () => {
             join_date: "01/02/2025",
             email: "asadmaster@gmail.com",
             phone: "7990980675",
+            logo: asad_master,
         },
     ];
     return (
@@ -25,7 +27,7 @@ const UserProfile = () => {
                 <h1 className='text-3xl font-bold text-gray-800 mb-4 '>Admin Profile</h1>
                 {Data.map((admin, index) => (
                     <div key={index} className='space-y-4'>
-                        <img src={logo} alt="Profile" className='w-24 h-24 mx-auto rounded-full border-4 border-gray-300' />
+                        <img src={admin.logo} alt="Profile" className='w-24 h-24 mx-auto rounded-full border-4 border-gray-300' />
                         <h2 className='text-xl font-semibold text-gray-900'>{admin.name}</h2>
                         <p className='text-gray-600 '>{admin.designation}</p>
                         <div className='text-left space-y-2 mt-4'>
@@ -93,20 +95,13 @@ const UserProfile = () => {
                                         className="w-full px-4 py-2 border rounded-lg"
                                     />
                                 </div>
-                                <div>
-                                    <label htmlFor="phone">Uploade Image:</label>
-                                    <input
-                                        type="file" accept="image/*"
-                                        name="phone"
-                                        value={editEmployee.phone}
-                                        className="w-full px-4 py-2 border rounded-lg"
-                                    />
+                                <div className="flex flex-col justify-between mt-4">
+                                    <label htmlFor="phone">Image:</label>
+                                    <input type="image" src="" alt="Submit" className="w-full px-4 py-2 border rounded-lg" />
                                 </div>
+                                
                                 <div className="flex justify-between mt-4">
-                                    <button
-                                        className="bg-gray-300 px-4 py-2 rounded-full cursor-pointer"
-                                        onClick={ToggleModal}
-                                    >
+                                    <button className="bg-gray-300 px-4 py-2 rounded-full cursor-pointer"  onClick={ToggleModal}>
                                         Cancel
                                     </button>
                                     <button className='bg-blue-400 px-4 py-2 rounded-full text-white cursor-pointer'>

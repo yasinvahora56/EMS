@@ -9,13 +9,15 @@ import SideBar from "./Components/User/Sidebar/SideBar"
 import Leave from "./Components/Admin/Leave/Leave"
 import Payroll from "./Components/Admin/Salary/Payroll"
 import UserProfile from "./Components/User/Profile/UserProfile"
+import UserDashBoard from "./Components/User/UserDashBoard/UserDashBoard"
+import LeaveReaquest from "./Components/User/LeaveRequest/LeaveReaquest"
 
 
 function App() {
 
   return (
     <Router>
-      {/* <div className="flex">
+      <div className="flex">
       <SideNav/>
       <div className="flex-1 p-4">
           <Routes>
@@ -27,15 +29,17 @@ function App() {
             <Route path="/profile" element={<Profile/>}/>
           </Routes>
         </div>
-      </div> */}
-      <div className="flex"> 
+      </div>
+      {/* <div className="flex"> 
       <SideBar/>
         <div>
           <Routes>
+            <Route path="/UserDashBoard" element={<UserDashBoard/>}></Route>
+            <Route path="/LeaveRequest" element={<LeaveReaquest/>}></Route>
             <Route path="/UserProfile" element={<UserProfile/>}></Route>
           </Routes>
         </div>
-      </div>
+      </div> */}
     </Router>
   )
 }
