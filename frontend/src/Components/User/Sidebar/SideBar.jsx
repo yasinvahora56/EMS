@@ -45,7 +45,7 @@ const SideBar = ({ toggleSidebar }) => {
   ]
 
   return (
-    <aside className="absolute top-0 h-screen">
+    <aside className="absolute top-0 h-screen fixed z-40">
       <nav className={`h-full ${expended ? "w-55" : "w-20"} sidebar flex flex-col bg-white text-black shadow-lg`}>
         {/* Logo Section */}
           
@@ -90,7 +90,7 @@ const SideBar = ({ toggleSidebar }) => {
           </li>
           <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
             <GiTakeMyMoney className="w-5 h-5" />
-            {expended && <Link to="/Payroll" className="font-medium">Payroll</Link>}
+            {expended && <Link to="/Salary" className="font-medium">Payroll</Link>}
           </li>
           <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
             <ImProfile className="w-5 h-5" />
