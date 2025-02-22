@@ -18,7 +18,7 @@ function App() {
 
   return (
     <Router>
-      {/* <div className="flex">
+      <div className="flex">
       <SideNav/>
       <div className="flex-1 p-4">
           <Routes>
@@ -30,8 +30,8 @@ function App() {
             <Route path="/profile" element={<Profile/>}/>
           </Routes>
         </div>
-      </div> */}
-      <div className="flex"> 
+      </div>
+      {/* <div className="flex"> 
       <SideBar/>
         <div>
           <Routes>
@@ -41,7 +41,7 @@ function App() {
             <Route path="/UserProfile" element={<UserProfile/>}></Route>
           </Routes>
         </div>
-      </div>
+      </div> */}
     </Router>
   )
 }
