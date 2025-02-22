@@ -2,7 +2,7 @@ import React from 'react'
 
 const LeaveRequest = () => {
   return (
-    <div className='flex flex-col items-center mt-10 ml-100'>
+    <div className='flex flex-col items-center justify-center h-screen'>
       <div className='w-full max-w-3xl '>
         <h1 className='text-4xl font-bold mb-6 text-center text-gray-800'>Request For Leave</h1>
         <div className='bg-white shadow-2xl rounded-2xl p-8 space-y-6'>
