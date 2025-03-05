@@ -39,7 +39,7 @@ const SideNav = ({ toggleSidebar }) => {
   }
 
   return (
-    <aside className="absolute top-0 h-screen fixed">
+    <aside className="absolute top-0 h-screen fixed z-40">
       <nav className={`h-full ${expended ? "w-55" : "w-20"} sidebar flex flex-col bg-white text-black shadow-lg`}>
         {/* Logo Section */}
           

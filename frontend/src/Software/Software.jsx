@@ -29,7 +29,7 @@ const Software = () => {
           </Routes>
         </div>
       </div>
-      <div className="flex"> 
+      {/* <div className="flex"> 
       <SideBar/>
         <div>
           <Routes>
@@ -39,7 +39,7 @@ const Software = () => {
             <Route path="/UserProfile" element={<UserProfile/>}></Route>
           </Routes>
         </div>
-      </div>
+      </div> */}
     </Router>
     </div>
   )
