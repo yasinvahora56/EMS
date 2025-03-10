@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import logo from "./Images/Login.png"
 import { User, Lock, Building } from 'lucide-react';
 
@@ -11,8 +12,6 @@ const Login = () => {
         </div>
 
         <div className="mb-12 text-center">
-          <h1 className="text-4xl font-bold text-white mb-2">Welcome to Our</h1>
-          <h2 className="text-3xl font-bold text-white mb-4">Employee Management System</h2>
           <p className="text-gray-400">Welcome back! Please login to your account.</p>
         </div>
       <div className="space-y-6">
@@ -48,6 +47,7 @@ const Login = () => {
               <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg cursor-pointer">
                 Login
               </button>
+              <p className="text-white">Don't Have an Account <Link to={'/Signup'}>Signup</Link></p>
             </div>
           </div>
         </div>
