@@ -11,7 +11,7 @@ const DashBoard = () => {
   ];
 
   return (
-    <div className="ml-60 mt-7 p-6">
+    <div className=" mt-7 p-6">
       <h1 className="text-3xl font-bold">Admin Dashboard</h1>
       <div className="grid grid-cols-4 gap-4 mt-6">
         {Data.map((card, index) => (

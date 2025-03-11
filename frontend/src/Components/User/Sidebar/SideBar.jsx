@@ -72,31 +72,24 @@ const SideBar = ({ toggleSidebar }) => {
 
         {/* Navigation Links */}
         <ul className="flex flex-col mt-4 space-y-2 px-4 ">
-          <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
-            <Home className="w-5 h-5" />
-            {expended && <Link to="/UserDashBoard" className="font-medium">Dashboard</Link>}
-          </li>
-          {/* <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
-            <User className="w-5 h-5" />
-            {expended && <Link to="/Employee" className="font-medium">Employee</Link>}
-          </li> */}
-          {/* <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
-            <IoFingerPrint className="w-5 h-5" />
-            {expended && <Link to="/Attandance" className="font-medium">Attandance</Link>}
-          </li> */}
-          <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
-            <SlCalender className="w-5 h-5" />
-            {expended && <Link to="/LeaveRequest" className="font-medium">Leave Request</Link>}
-          </li>
-          <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
-            <GiTakeMyMoney className="w-5 h-5" />
-            {expended && <Link to="/Salary" className="font-medium">Payroll</Link>}
-          </li>
-          <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
-            <ImProfile className="w-5 h-5" />
-            {expended && <Link to="/UserProfile" className="font-medium">Profile</Link>}
-          </li>
-        </ul>
+  <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
+    <Home className="w-5 h-5" />
+    {expended && <Link to="dashBoard" className="font-medium">Dashboard</Link>}
+  </li>
+  <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
+    <SlCalender className="w-5 h-5" />
+    {expended && <Link to="leaveRequest" className="font-medium">Leave Request</Link>}
+  </li>
+  <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
+    <GiTakeMyMoney className="w-5 h-5" />
+    {expended && <Link to="salary" className="font-medium">Payroll</Link>}
+  </li>
+  <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
+    <ImProfile className="w-5 h-5" />
+    {expended && <Link to="profile" className="font-medium">Profile</Link>}
+  </li>
+</ul>
+
           <ul className='flex flex-col space-y-2 px-4'>
           <li className={`flex items-center space-x-3 p-2 absolute bottom-17 left-5 rounded-lg hover:bg-black hover:text-white transition-all ${expended && "pr-23"}`}>
             <LogOut className="w-5 h-5" />

@@ -1,26 +1,12 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Login from "./Components/Login/Login"
-import Signup from "./Components/User/Signup/Signup"
-import Software from "./Software/Software"
-import SideBar from "./Components/User/Sidebar/SideBar";
+import { RouterProvider } from "react-router-dom";
+import router from "./Components/Routes/main_routes";
 
 
 
 function App() {
 
-  const router = createBrowserRouter([
-    {
-      path: '/Signup',
-      element: <Signup />,
-    },
-    {
-      path: '/Login',
-      element: <Login />,
-    },
-  ]);
-
   return (
-    <RouterProvider router={router} />
+    <RouterProvider router={router} />  
   );
 }
 
