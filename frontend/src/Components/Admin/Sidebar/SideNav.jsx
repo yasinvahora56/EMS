@@ -15,72 +15,89 @@ const SideNav = ({ toggleSidebar }) => {
   const expend = () => {
     setExpended(!expended);
     toggleSidebar();
-  }
+  };
 
   const logOutHandle = () => {
-    enqueueSnackbar("LogOut Successfully 🎉", {variant: "success"});
-    navigate("/login"); // Changed to redirect to login instead of Dashboard
-  }
+    enqueueSnackbar("LogOut Successfully 🎉", { variant: "success" });
+    navigate("/login");
+  };
 
   return (
-    <aside className="fixed top-0 h-screen">
-      <nav className={`h-full ${expended ? "w-55" : "w-20"} sidebar flex flex-col bg-white text-black shadow-lg`}>
+    <aside className="fixed top-0 h-screen z-50">
+      <nav className={`h-full ${expended ? "w-56" : "w-20"} bg-gray-800 text-white shadow-lg flex flex-col transition-all duration-300`}>
+        
         {/* Logo Section */}
-        <div className="p-4 pb-8 flex justify-between items-center border-b border-blue-300">
-          <div className='flex flex-row gap-2'>
-            {expended && <img src={logo} className="w-15 h-15 rounded-full" alt="Logo" />}
-            {expended && 
-              <div className='flex flex-col'>
-                <h1 className='font-bold text-2xl'>Yasin Vahora</h1>
-                <p className='font-thin'>Owner</p>
+        <div className="p-4 flex justify-between items-center border-b border-gray-600">
+          <div className="flex items-center gap-3">
+            {expended && <img src={logo} className="w-14 h-14 rounded-full" alt="Logo" />}
+            {expended && (
+              <div>
+                <h1 className="font-bold text-lg">Yasin Vahora</h1>
+                <p className="text-gray-400 text-sm">Owner</p>
               </div>
-            }
+            )}
           </div>
           <button 
-            className={`text-white bg-black px-2 py-1 rounded-full hover:text-gray-200 transition-all cursor-pointer ${!expended && "absolute top-2 left-5.5"}`} 
-            onClick={expend} // Use expend function to also trigger toggleSidebar
+            className="text-white bg-gray-700 px-2 py-1 rounded-full hover:bg-gray-600 transition-all" 
+            onClick={expend}
           >
             {expended ? "✕" : "☰"}
           </button>
         </div>
 
         {/* Navigation Links */}
-        <ul className="flex flex-col mt-4 space-y-2 px-4">
-          <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
-            <Home className="w-5 h-5" />
-            {expended && <Link to="/admin/dashboard" className="font-medium">Dashboard</Link>}
+        <ul className="flex-1 overflow-y-auto mt-4 space-y-1">
+          <li>
+            <Link to="/admin/dashboard" className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-700 transition-all ml-2">
+              <Home className="w-5 h-5" />
+              {expended && <span className="font-medium">Dashboard</span>}
+            </Link>
           </li>
-          <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
-            <User className="w-5 h-5" />
-            {expended && <Link to="/admin/employee" className="font-medium">Employee</Link>}
+          <li>
+            <Link to="/admin/employee" className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-700 transition-all ml-2">
+              <User className="w-5 h-5" />
+              {expended && <span className="font-medium">Employee</span>}
+            </Link>
           </li>
-          <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
-            <IoFingerPrint className="w-5 h-5" />
-            {expended && <Link to="/admin/attandance" className="font-medium">Attendance</Link>}
+          <li>
+            <Link to="/admin/attandance" className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-700 transition-all ml-2">
+              <IoFingerPrint className="w-5 h-5" />
+              {expended && <span className="font-medium">Attendance</span>}
+            </Link>
           </li>
-          <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
-            <SlCalender className="w-5 h-5" />
-            {expended && <Link to="/admin/leave" className="font-medium">Leave</Link>}
+          <li>
+            <Link to="/admin/leave" className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-700 transition-all ml-2">
+              <SlCalender className="w-5 h-5" />
+              {expended && <span className="font-medium">Leave</span>}
+            </Link>
           </li>
-          <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
-            <GiTakeMyMoney className="w-5 h-5" />
-            {expended && <Link to="/admin/payroll" className="font-medium">Payroll</Link>}
+          <li>
+            <Link to="/admin/payroll" className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-700 transition-all ml-2">
+              <GiTakeMyMoney className="w-5 h-5" />
+              {expended && <span className="font-medium">Payroll</span>}
+            </Link>
           </li>
-          <li className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all">
-            <ImProfile className="w-5 h-5" />
-            {expended && <Link to="/admin/profile" className="font-medium">Profile</Link>}
+          <li>
+            <Link to="/admin/profile" className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-700 transition-all ml-2">
+              <ImProfile className="w-5 h-5" />
+              {expended && <span className="font-medium">Profile</span>}
+            </Link>
           </li>
         </ul>
-        
-        <div className='p-4 mt-auto'>
-          <div className="flex items-center space-x-3 p-2 rounded-lg hover:bg-black hover:text-white transition-all cursor-pointer" onClick={logOutHandle}>
+
+        {/* Logout Button (Sticky Bottom) */}
+        <div className="p-4 mt-auto border-t border-gray-600">
+          <button 
+            className="flex items-center gap-4 w-full p-3 rounded-lg hover:bg-red-600 transition-all ml-2" 
+            onClick={logOutHandle}
+          >
             <LogOut className="w-5 h-5" />
             {expended && <span className="font-medium">Logout</span>}
-          </div>
+          </button>
         </div>
 
         {/* Footer Section */}
-        <div className="mt-auto p-4 border-t border-blue-300 text-sm text-center">
+        <div className="p-4 border-t border-gray-600 text-sm text-center">
           <p>© 2025 {expended && "Yasin Vahora"}</p>
         </div>
       </nav>

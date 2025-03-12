@@ -51,7 +51,7 @@ const Employee = () => {
 
   return (
     <>
-       <div className="p-6 ml-[20rem] w-[calc(100%-20rem)]"> {/* Sidebar ke hisaab se margin & width adjust ki */}
+       <div className="p-6 ml-20 "> {/* Sidebar ke hisaab se margin & width adjust ki */}
           
           {/* 🔹 Header Section with Search & Add Button */}
           <div className="bg-white shadow-md rounded-lg px-6 py-4 flex justify-between items-center mb-4 w-[80%]">
