@@ -1,16 +1,17 @@
+import dotenv from "dotenv"
 import express from "express"
 import cors from "cors"
-import dotenv from "dotenv"
 import bodyParser from "body-parser"
 import mongoose from "mongoose";
-
-
+import router from "./Routes/Authrouter.js";
 
 const app = express()
 app.use(bodyParser.json())
-app.use(cors())
 dotenv.config()
+app.use(cors())
+
 const URL = process.env.MONGOCONNECTION
+app.use('/auth', router) 
 
 mongoose.connect(URL)
     .then(() => {
@@ -18,7 +19,7 @@ mongoose.connect(URL)
     }).catch((err) => {
         console.log(`Something Went Wrong With DB ${err}` )
     })
-
+                                          
 
 const PORT = process.env.PORT || 4000
 
