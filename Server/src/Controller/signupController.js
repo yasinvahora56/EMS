@@ -20,11 +20,12 @@ const signup = async (req, res) => {
             password
         })
         userModel.password = await bcrypt.hash(password, 10)
-        await userModel.save()
+        
         res.status(201)
             .json({
                 message: "Signup Successfully", success:true
             })
+        await userModel.save()
     } catch (error) {
         res.status(500)
             .json({
