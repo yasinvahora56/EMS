@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import logo from "./Image/Login.png";
+import logo from "./image/Login.png";
 import { User, Lock, Building } from 'lucide-react';
+
 
 const Signup = () => {
   return (
