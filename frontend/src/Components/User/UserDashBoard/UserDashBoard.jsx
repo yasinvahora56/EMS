@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LogIn, Coffee, LogOut } from "lucide-react";
+import { LogIn, Coffee, LogOut, Clock, Calendar } from "lucide-react";
 import { MdOutlineTimerOff, MdTask } from "react-icons/md";
 import { FaCircle } from "react-icons/fa";
 
@@ -10,15 +10,23 @@ const UserDashBoard = () => {
   const [breakEndTime, setBreakEndTime] = useState('');
   const [checkOutTime, setCheckOutTime] = useState('');
   const [totalWorkingHours, setTotalWorkingHours] = useState('');
-  const [currentStatus, setCurrentStatus] = useState('');
-  
+  const [currentStatus, setCurrentStatus] = useState('Not Started');
 
   useEffect(() => {
     const interval = setInterval(() => {
       const now = new Date();
-      const date = now.toLocaleDateString();
-      const time = now.toLocaleTimeString();
-      setDateTime(`${date} - ${time}`);
+      const date = now.toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      });
+      const time = now.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+      setDateTime(`${date} | ${time}`);
     }, 1000);
     return () => clearInterval(interval);
   }, []);
@@ -27,7 +35,6 @@ const UserDashBoard = () => {
     const now = new Date();
     setCheckInTime(now.toLocaleTimeString());
     setCurrentStatus("Check-in")
-    // Store timestamp for calculation
     localStorage.setItem('checkInTimestamp', now.getTime().toString());
   };
 
@@ -35,7 +42,6 @@ const UserDashBoard = () => {
     const now = new Date();
     setBreakTime(now.toLocaleTimeString());
     setCurrentStatus("Break")
-    // Store timestamp for calculation
     localStorage.setItem('breakTimestamp', now.getTime().toString());
   };
 
@@ -43,7 +49,6 @@ const UserDashBoard = () => {
     const now = new Date();
     setBreakEndTime(now.toLocaleTimeString());
     setCurrentStatus("Check-in")
-    // Store timestamp for calculation
     localStorage.setItem('breakEndTimestamp', now.getTime().toString());
   };
 
@@ -66,13 +71,11 @@ const UserDashBoard = () => {
 
     let totalWorkDuration = checkOutTimestamp - checkInTimestamp;
 
-    // If there was a break, subtract break duration
     if (breakTimestamp && breakEndTimestamp) {
       const breakDuration = breakEndTimestamp - breakTimestamp;
       totalWorkDuration -= breakDuration;
     }
 
-    // Convert milliseconds to hours and minutes
     const hours = Math.floor(totalWorkDuration / (1000 * 60 * 60));
     const minutes = Math.floor((totalWorkDuration % (1000 * 60 * 60)) / (1000 * 60));
 
@@ -81,95 +84,158 @@ const UserDashBoard = () => {
 
   const TodayTasks = [
     {
-      task: "Meating With Your Senier"
+      task: "Meeting With Your Senior",
+      priority: "high"
     },
     {
-      task: "Taking Interviwe of new Employees"
+      task: "Taking Interview of New Employees",
+      priority: "medium"
     },
     {
-      task: "Give All the work completly of yesterday"
+      task: "Complete Pending Work from Yesterday",
+      priority: "low"
     },
-  ]
+  ];
 
-  
-
- 
+  const getPriorityColor = (priority) => {
+    switch(priority) {
+      case 'high': return 'bg-red-100 text-red-800';
+      case 'medium': return 'bg-yellow-100 text-yellow-800';
+      case 'low': return 'bg-green-100 text-green-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
 
   return (
-    <div className="flex flex-col ml-70 mt-10">
-      <div className="flex items-center">
-        <h1 className="text-4xl font-bold mb-6 text-gray-800">
-          Employee Dashboard <span className="text-2xl font-bold mb-6 text-center text-gray-800">({dataTime})</span>
-        </h1>
-        <div className="flex items-center justify-center mb-3 mx-3">
-        <div className={`rounded-full text-xl text-white px-4 py-2 flex items-center gap-2 ${currentStatus === "Check-in" ? "bg-green-300 shadow-green-200" : ""} ${currentStatus === "Break" ? "bg-amber-300 shadow-amber-200" : ""} ${currentStatus === "Check-Out" ? "bg-red-300 shadow-red-200" : ""}`}>
-          <h2>{currentStatus}</h2>
-          <FaCircle />
-        </div>
-        </div>
-      </div>
-      <div className=""> 
-        <div className="bg-white">
-          <div className="grid grid-cols-4 gap-4 mt-6">
-            <div className="flex items-center justify-between bg-amber-300 p-4 rounded-lg shadow-md border-l-8 border-amber-500 w-70">
-              <div>
-                <h1 className="text-md font-semibold">Check In</h1>
-                <p className="text-2xl font-bold">{checkInTime}</p>
-              </div>
-              <button onClick={handleCheckIn} className="ml-4 bg-amber-800 p-4 text-white rounded-xl flex gap-2 cursor-pointer text-2xl">
-                <LogIn />
-              </button>
+    <div className="bg-gray-50 min-h-screen p-8">
+      <div className="container mx-auto">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-8">
+          <div>
+            <h1 className="text-4xl font-bold text-gray-800">Employee Dashboard</h1>
+            <div className="flex items-center mt-2 text-gray-600">
+              <Calendar className="mr-2 w-5 h-5" />
+              <span className="text-lg">{dataTime}</span>
             </div>
-            <div className="flex items-center justify-between bg-amber-300 p-4 rounded-lg shadow-md border-l-8 border-amber-500 w-70">
-              <div>
-                <h1 className="text-md font-semibold">Break</h1>
-                <p className="text-2xl font-bold">{breakTime}</p>
-              </div>
-              <button onClick={handleBreak} className="ml-4 bg-amber-800 p-4 text-white rounded-xl flex gap-2 cursor-pointer text-2xl">
-                <Coffee />
-              </button>
-            </div>
-            <div className="flex items-center justify-between bg-amber-300 p-4 rounded-lg shadow-md border-l-8 border-amber-500 w-70">
-              <div>
-                <h1 className="text-md font-semibold">Break End</h1>
-                <p className="text-2xl font-bold">{breakEndTime}</p>
-              </div>
-              <button onClick={handleBreakEnd} className="ml-4 bg-amber-800 p-4 text-white rounded-xl flex gap-2 cursor-pointer text-2xl">
-                <MdOutlineTimerOff />
-              </button>
-            </div>
-            <div className="flex items-center justify-between bg-amber-300 p-4 rounded-lg shadow-md border-l-8 border-amber-500 w-70">
-              <div>
-                <h1 className="text-md font-semibold">Check Out</h1>
-                <p className="text-2xl font-bold">{checkOutTime}</p>
-              </div>
-              <button onClick={handleCheckOut} className="ml-4 bg-amber-800 p-4 text-white rounded-xl flex gap-2 cursor-pointer text-2xl">
-                <LogOut />
-              </button>
-            </div>
-            <div className="flex items-center justify-between bg-amber-300 p-4 rounded-lg shadow-md border-l-8 border-amber-500 w-70">
-              <div>
-                <h1 className="text-md font-semibold">Total Working Hours:</h1>
-                <p className="text-2xl font-bold">{totalWorkingHours}</p>
-              </div>
-              {/* <button onClick={handleCheckOut} className="ml-4 bg-amber-800 p-4 text-white rounded-xl flex gap-2 cursor-pointer text-2xl">
-                <LogOut />
-              </button> */}
+          </div>
+
+          {/* Status Indicator */}
+          <div className="flex items-center">
+            <div className={`
+              rounded-full px-4 py-2 flex items-center gap-2 shadow-md
+              ${currentStatus === "Check-in" ? "bg-green-500 text-white" : 
+                currentStatus === "Break" ? "bg-amber-500 text-white" : 
+                currentStatus === "Check-Out" ? "bg-red-500 text-white" : 
+                "bg-gray-300 text-gray-700"
+              }
+            `}>
+              <span className="font-semibold">{currentStatus}</span>
+              <FaCircle className="animate-pulse" />
             </div>
           </div>
         </div>
-      </div>
 
-
-                <div className="max-w-100 mt-10 flex flex-col gap-4">
-                  <h1 className="font-semibold text-2xl">Today's Tasks</h1>
-                  <div className="bg-white shadow-xl flex flex-col gap-4 p-4 rounded-lg">
-                      {TodayTasks.map((task, index) => 
-                        <h1 className={`px-3 py-2 rounded-lg ${index % 2 ? "bg-green-200" : "bg-red-200"}`}> {task.task}</h1>
-                      )}
-                  </div>
+        {/* Time Tracking Grid */}
+        <div className="grid md:grid-cols-5 gap-6 mb-10">
+          {[
+            { 
+              title: "Check In", 
+              time: checkInTime, 
+              icon: <LogIn className="w-8 h-8" />, 
+              onClick: handleCheckIn,
+              bgColor: "bg-blue-100",
+              textColor: "text-blue-800"
+            },
+            { 
+              title: "Break", 
+              time: breakTime, 
+              icon: <Coffee className="w-8 h-8" />, 
+              onClick: handleBreak,
+              bgColor: "bg-amber-100",
+              textColor: "text-amber-800"
+            },
+            { 
+              title: "Break End", 
+              time: breakEndTime, 
+              icon: <MdOutlineTimerOff className="w-8 h-8" />, 
+              onClick: handleBreakEnd,
+              bgColor: "bg-green-100",
+              textColor: "text-green-800"
+            },
+            { 
+              title: "Check Out", 
+              time: checkOutTime, 
+              icon: <LogOut className="w-8 h-8" />, 
+              onClick: handleCheckOut,
+              bgColor: "bg-red-100",
+              textColor: "text-red-800"
+            },
+            { 
+              title: "Total Working Hours", 
+              time: totalWorkingHours, 
+              icon: <Clock className="w-8 h-8" />, 
+              bgColor: "bg-purple-100",
+              textColor: "text-purple-800"
+            }
+          ].map((item, index) => (
+            <div 
+              key={index} 
+              className={`
+                ${item.bgColor} ${item.textColor} 
+                rounded-xl shadow-md p-6 transform transition-all 
+                hover:scale-105 hover:shadow-lg
+              `}
+            >
+              <div className="flex justify-between items-center">
+                <div>
+                  <h2 className="text-sm font-semibold mb-2">{item.title}</h2>
+                  <p className="text-2xl font-bold">{item.time || '-'}</p>
                 </div>
+                {item.onClick ? (
+                  <button 
+                    onClick={item.onClick} 
+                    className={`
+                      ${item.textColor} bg-white rounded-full p-3 
+                      hover:bg-opacity-80 transition-all
+                    `}
+                  >
+                    {item.icon}
+                  </button>
+                ) : (
+                  <div className={`${item.textColor} opacity-70`}>
+                    {item.icon}
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
 
+        {/* Today's Tasks */}
+        <div className="bg-white rounded-xl shadow-md p-6">
+          <h2 className="text-2xl font-semibold mb-6 text-gray-800 flex items-center">
+            <MdTask className="mr-3 text-blue-500" />
+            Today's Tasks
+          </h2>
+          <div className="space-y-4">
+            {TodayTasks.map((task, index) => (
+              <div 
+                key={index} 
+                className={`
+                  ${getPriorityColor(task.priority)} 
+                  px-4 py-3 rounded-lg flex justify-between items-center
+                  hover:shadow-md transition-all
+                `}
+              >
+                <span className="font-medium">{task.task}</span>
+                <span className="text-sm capitalize font-semibold">
+                  {task.priority} Priority
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -14,15 +14,16 @@ const UserSchema = new schema({
     type: String,
     required: true
     },
+    role: { 
+        type: String,
+        default: "employee",
+        enum:["admin", "employee"]
+    },
     course:{
     type: String,
     required: true
     },
     joindate:{
-    type: String,
-    required: true
-    },
-    employeeId:{
     type: String,
     required: true
     },

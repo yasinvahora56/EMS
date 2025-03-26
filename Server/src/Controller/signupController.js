@@ -3,7 +3,7 @@ import UserModel from "../model/UserModel.js"
 
 const signup = async (req, res) => {
     try {
-        const {name, email, gender, course, joindate, employeeId, designation, password} = req.body
+        const {name, email, gender, course, joindate, designation, password} = req.body
         const user = await UserModel.findOne({ email })
         if (user) {
             return res.status(409)
@@ -14,8 +14,7 @@ const signup = async (req, res) => {
             email, 
             gender, 
             course, 
-            joindate, 
-            employeeId, 
+            joindate,
             designation, 
             password
         })

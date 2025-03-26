@@ -70,7 +70,7 @@ const Salary = () => {
   return (
     <>
 
-<div className="flex items-center justify-center max-h-screen z-0 ml-90 mt-10">
+<div className="flex items-center justify-center max-h-screen z-0 mt-10">
       <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-lg p-6">
         <h1 className="text-3xl font-bold text-gray-800 mb-6">Salary Table</h1>
         

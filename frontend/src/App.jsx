@@ -1,12 +1,22 @@
-import { RouterProvider } from "react-router-dom";
+import { BrowserRouter, RouterProvider } from "react-router-dom";
 import router from "./Components/Routes/Main_Routes";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 
 
 function App() {
 
+  
+
   return (
-    <RouterProvider router={router} />  
+   <>
+    <ToastContainer />
+ 
+        <RouterProvider router={router} />
+      
+   </>
   );
 }
 

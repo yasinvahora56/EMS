@@ -15,6 +15,9 @@ import LeaveReaquest from "../User/LeaveRequest/LeaveReaquest"
 import Salary from "../User/Payroll/Salary";
 import UserProfile from "../User/Profile/UserProfile";
 
+
+
+
 const router = createBrowserRouter([
   {
     path: '/signup',
@@ -25,7 +28,7 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: '/',
+    path: '/admin',
     element: <AdminRoutes />,
     children: [
       {
@@ -33,27 +36,27 @@ const router = createBrowserRouter([
         element: <Dashboard />
       },
       {
-        path: "admin/dashboard",
+        path: "dashboard",
         element: <Dashboard />
       },
       {
-        path: "admin/employee",
+        path: "employee",
         element: <Employee />
       },
       {
-        path: "admin/attandance",
+        path: "attandance",
         element: <Attendance />
       },
       {
-        path: "admin/leave",
+        path: "leave",
         element: <Leave />
       },
       {
-        path: "admin/payroll",
+        path: "payroll",
         element: <Payroll />
       },
       {
-        path: "admin/profile",
+        path: "profile",
         element: <Profile />
       },
       {
@@ -63,7 +66,7 @@ const router = createBrowserRouter([
     ]
   },
   {
-    path: '/home',
+    path: '/employee',
     element: <UserRoutes />,
     children: [
       {

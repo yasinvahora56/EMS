@@ -2,8 +2,8 @@ import joi from "joi"
 
 const LoginValidation = (req, res, next) => {
     const schema = joi.object({
-        employeeId:joi.string().min(2).max(10).required(),
-        password: joi.string().min(6).max(10).required()
+        email:joi.string().email().required(),
+        password: joi.string().min(5).max(20).required()
     })
     const {error} = schema.validate(req.body)
     if(error){

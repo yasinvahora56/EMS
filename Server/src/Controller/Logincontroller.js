@@ -4,9 +4,9 @@ import bcrypt from "bcrypt"
 
 const login = async (req, res) => {
     try {
-         const { employeeId, password } = req.body
+         const { email, password } = req.body
          const errmessage="Password or id wrong"
-         const user = await UserModel.findOne({ employeeId })
+         const user = await UserModel.findOne({ email })
          if(!user) {
             res.status(409)
                 .json({msg: errmessage, success: false})
@@ -17,7 +17,7 @@ const login = async (req, res) => {
                 .json({msg: errmessage, success: false})
          }
          const jwtToken = jwt.sign(
-            {email: user.email, _id : user.id},
+            {email: user.email, _id : user.id, role: user.role, designation: user.designation},
             process.env.JWT_SECRET,
             { expiresIn: "24h" }
          )
@@ -26,7 +26,10 @@ const login = async (req, res) => {
                 msg: "Login Success",
                 success:true,
                 jwtToken,
-                name: user.name
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                designation: user.designation
             })
 
     } catch (error) {

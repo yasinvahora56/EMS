@@ -13,7 +13,7 @@ const UserRoutes = () => {
     return (
         <div className="flex min-h-screen">
             <SideBar toggleSidebar={toggleSidebar} /> {/* Pass the function properly */}
-            <main className={`flex-1 transition-all ${sidebarExpended ? 'ml-55' : 'ml-20'}`}>
+            <main className={`flex-1 transition-all ${sidebarExpended ? 'ml-20' : 'ml-65'}`}>
                 <Outlet />
             </main>
         </div>

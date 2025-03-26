@@ -7,7 +7,6 @@ const SignupValidation = (req, res, next) => {
         gender: joi.string().min(4).max(20).required(),
         course: joi.string().min(2).max(10).required(),
         joindate: joi.string().required(),
-        employeeId: joi.string().min(2).max(10).required(),
         designation: joi.string().min(3).max(15).required(),
         password: joi.string().min(6).max(10).required()
     })
