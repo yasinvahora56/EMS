@@ -25,12 +25,13 @@ const checkin = async (req, res) => {
     try {
         const employeeId = req.employeeId;
 
-        // Check for any existing active check-in
+        // Ahiya check kareche ke user pehle thi che ke nai
         const existingActiveCheckin = await AttandanceSchema.findOne({ 
             employeeId, 
             status: { $in: ["Checked In", "On Break"] } 
         });
 
+        // agar user pehle thi check in che to error aavse
         if (existingActiveCheckin) {
             return res.status(400).json({ 
                 message: "You are already checked in", 

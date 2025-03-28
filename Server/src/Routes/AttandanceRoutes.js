@@ -3,17 +3,13 @@ import {
     checkin, 
     checkout, 
     getAttendanceRecords 
-} from '../controllers/attendanceController.js';
-import CheckoutValidation from '../middlewares/CheckoutValidation.js';
-import FetchEmployeeId from '../middlewares/FetchEmployeeId.js';
+} from '../controller/AttandanceController.js';
+import FetchEmployeeId from '../middlewares/Validation/FetchEmployeeId.js';
 
-const router = express.Router();
+const routes = express.Router();
 
-// Debug route to get all attendance records
-router.get('/records', CheckoutValidation, getAttendanceRecords);
+routes.get('/records', FetchEmployeeId, getAttendanceRecords);
+routes.post("/checkin", FetchEmployeeId, checkin);
+routes.post('/checkout', FetchEmployeeId, checkout);
 
-// Existing check-in and check-out routes
-router.post("/checkin", FetchEmployeeId, checkin);
-router.post('/checkout', CheckoutValidation, checkout);
-
-export default router;
+export default routes;

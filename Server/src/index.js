@@ -4,6 +4,7 @@ import cors from "cors"
 import bodyParser from "body-parser"
 import mongoose from "mongoose";
 import router from "./Routes/Authrouter.js";
+import routes from "./Routes/AttandanceRoutes.js";
 
 const app = express()
 app.use(bodyParser.json())
@@ -12,6 +13,7 @@ app.use(cors())
 
 const URL = process.env.MONGOCONNECTION
 app.use('/auth', router) 
+app.use('/attandance', routes)
 
 mongoose.connect(URL)
     .then(() => {
