@@ -58,6 +58,18 @@ const UserDashBoard = () => {
     setCurrentStatus("Check-Out")
     calculateTotalHours(now.getTime());
   };
+  const token = localStorage.getItem("jwtToken");
+  
+  fetch("http://localhost:8080/auth/checkin", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}` 
+    }
+  })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error("Error:", error));
 
   const calculateTotalHours = (checkOutTimestamp) => {
     const checkInTimestamp = parseInt(localStorage.getItem('checkInTimestamp') || '0');
