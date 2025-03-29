@@ -1,5 +1,4 @@
-import login from "../Controller/Logincontroller.js"
-import signup from "../Controller/signupController.js"
+import { login, signup } from "../controller/authController.js"
 import  SignupValidation  from "../middlewares/Auth/SignupValidation.js"
 import  LoginValidation  from "../middlewares/Auth/LoginValidation.js"
 import express from "express"

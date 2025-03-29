@@ -3,8 +3,8 @@ import express from "express"
 import cors from "cors"
 import bodyParser from "body-parser"
 import mongoose from "mongoose";
-import router from "./Routes/Authrouter.js";
-import routes from "./Routes/AttandanceRoutes.js";
+import authRouter from "./Routes/authRouter.js";
+import attendanceRouter from "./Routes/attendanceRoute.js"
 
 const app = express()
 app.use(bodyParser.json())
@@ -12,8 +12,8 @@ dotenv.config()
 app.use(cors())
 
 const URL = process.env.MONGOCONNECTION
-app.use('/auth', router) 
-app.use('/attandance', routes)
+app.use('/auth', authRouter) 
+app.use('/attendance', attendanceRouter)
 
 mongoose.connect(URL)
     .then(() => {

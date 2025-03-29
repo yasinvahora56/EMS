@@ -1,8 +1,8 @@
-import jwt from "jsonwebtoken"
-import UserModel from "../model/UserModel.js"
 import bcrypt from "bcrypt"
+import UserModel from "../model/UserModel.js"
+import jwt from "jsonwebtoken"
 
-const login = async (req, res) => {
+export const login = async (req, res) => {
     try {
          const { email, password } = req.body
          const errmessage="Password or id wrong"
@@ -41,5 +41,36 @@ const login = async (req, res) => {
             error: error.message
         })
     }
+} 
+
+export const signup = async (req, res) => {
+    try {
+        const {name, email, gender, course, joindate, designation, password} = req.body
+        const user = await UserModel.findOne({ email })
+        if (user) {
+            return res.status(409)
+                .json({message: "User Alredy Exist", success: false })
+        }
+        const userModel = new UserModel({
+            name, 
+            email, 
+            gender, 
+            course, 
+            joindate,
+            designation, 
+            password
+        })
+        userModel.password = await bcrypt.hash(password, 10)
+        
+        res.status(201)
+            .json({
+                message: "Signup Successfully", success:true
+            })
+        await userModel.save()
+    } catch (error) {
+        res.status(500)
+            .json({
+                message: "Internal Server Error", success:false
+            })
+    }
 }
-export default login

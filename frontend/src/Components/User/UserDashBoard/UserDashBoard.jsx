@@ -11,7 +11,20 @@ const UserDashBoard = () => {
   const [checkOutTime, setCheckOutTime] = useState('');
   const [totalWorkingHours, setTotalWorkingHours] = useState('');
   const [currentStatus, setCurrentStatus] = useState('Not Started');
+  const [attendanceData, setAttendanceData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
+  const token = localStorage.getItem("jwtToken") || sessionStorage.getItem("jwtToken");
+
+  const API_URL = "http://localhost:8080";
+
+  // Fetch current status on load
+  useEffect(() => {
+    fetchAttendanceRecords();
+  }, []);
+
+  // Update date and time
   useEffect(() => {
     const interval = setInterval(() => {
       const now = new Date();
@@ -31,67 +44,213 @@ const UserDashBoard = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const handleCheckIn = () => {
-    const now = new Date();
-    setCheckInTime(now.toLocaleTimeString());
-    setCurrentStatus("Check-in")
-    localStorage.setItem('checkInTimestamp', now.getTime().toString());
-  };
+  // Fetch attendance records to get current status
+  const fetchAttendanceRecords = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${API_URL}/attendance/records`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      });
 
-  const handleBreak = () => {
-    const now = new Date();
-    setBreakTime(now.toLocaleTimeString());
-    setCurrentStatus("Break")
-    localStorage.setItem('breakTimestamp', now.getTime().toString());
-  };
+      if (!response.ok) {
+        throw new Error('Failed to fetch attendance records');
+      }
 
-  const handleBreakEnd = () => {
-    const now = new Date();
-    setBreakEndTime(now.toLocaleTimeString());
-    setCurrentStatus("Check-in")
-    localStorage.setItem('breakEndTimestamp', now.getTime().toString());
-  };
-
-  const handleCheckOut = () => {
-    const now = new Date();
-    setCheckOutTime(now.toLocaleTimeString());
-    setCurrentStatus("Check-Out")
-    calculateTotalHours(now.getTime());
-  };
-  const token = localStorage.getItem("jwtToken");
-  
-  fetch("http://localhost:8080/auth/checkin", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${token}` 
+      const data = await response.json();
+      setAttendanceData(data);
+      
+      // Set initial state based on latest record
+      if (data.records && data.records.length > 0) {
+        const latestRecord = data.records[0]; // Assuming sorted by most recent first
+        
+        // Set status
+        setCurrentStatus(latestRecord.status);
+        
+        // Set times
+        if (latestRecord.checkin) {
+          const checkinDate = new Date(latestRecord.checkin);
+          setCheckInTime(checkinDate.toLocaleTimeString());
+        }
+        
+        if (latestRecord.checkout) {
+          const checkoutDate = new Date(latestRecord.checkout);
+          setCheckOutTime(checkoutDate.toLocaleTimeString());
+          
+          if (latestRecord.totalHours) {
+            const hours = Math.floor(latestRecord.totalHours);
+            const minutes = Math.floor((latestRecord.totalHours - hours) * 60);
+            setTotalWorkingHours(`${hours}h ${minutes}m`);
+          }
+        }
+        
+        // Set break times if available (assuming last break entry)
+        if (latestRecord.breaks && latestRecord.breaks.length > 0) {
+          const lastBreak = latestRecord.breaks[latestRecord.breaks.length - 1];
+          if (lastBreak.startTime) {
+            const breakStartDate = new Date(lastBreak.startTime);
+            setBreakTime(breakStartDate.toLocaleTimeString());
+          }
+          
+          if (lastBreak.endTime) {
+            const breakEndDate = new Date(lastBreak.endTime);
+            setBreakEndTime(breakEndDate.toLocaleTimeString());
+          }
+        }
+      }
+      
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching attendance records:", error);
+      setError(error.message);
+      setLoading(false);
     }
-  })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error("Error:", error));
+  };
 
-  const calculateTotalHours = (checkOutTimestamp) => {
-    const checkInTimestamp = parseInt(localStorage.getItem('checkInTimestamp') || '0');
-    const breakTimestamp = parseInt(localStorage.getItem('breakTimestamp') || '0');
-    const breakEndTimestamp = parseInt(localStorage.getItem('breakEndTimestamp') || '0');
+  const handleCheckIn = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${API_URL}/attendance/checkin`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      });
 
-    if (!checkInTimestamp) {
-      setTotalWorkingHours('Please check in first');
-      return;
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to check in');
+      }
+
+      const data = await response.json();
+      
+      const now = new Date();
+      setCheckInTime(now.toLocaleTimeString());
+      setCurrentStatus("Checked In");
+      
+      // Refresh attendance data
+      fetchAttendanceRecords();
+      
+      setLoading(false);
+    } catch (error) {
+      console.error("Error during check-in:", error);
+      setError(error.message);
+      setLoading(false);
+      alert(error.message);
     }
+  };
 
-    let totalWorkDuration = checkOutTimestamp - checkInTimestamp;
+  const handleBreak = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${API_URL}/attendance/startBreak`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      });
 
-    if (breakTimestamp && breakEndTimestamp) {
-      const breakDuration = breakEndTimestamp - breakTimestamp;
-      totalWorkDuration -= breakDuration;
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to start break');
+      }
+
+      const data = await response.json();
+      
+      const now = new Date();
+      setBreakTime(now.toLocaleTimeString());
+      setCurrentStatus("On Break");
+      
+      // Refresh attendance data
+      fetchAttendanceRecords();
+      
+      setLoading(false);
+    } catch (error) {
+      console.error("Error starting break:", error);
+      setError(error.message);
+      setLoading(false);
+      alert(error.message);
     }
+  };
 
-    const hours = Math.floor(totalWorkDuration / (1000 * 60 * 60));
-    const minutes = Math.floor((totalWorkDuration % (1000 * 60 * 60)) / (1000 * 60));
+  const handleBreakEnd = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${API_URL}/attendance/endBreak`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      });
 
-    setTotalWorkingHours(`${hours}h ${minutes}m`);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to end break');
+      }
+
+      const data = await response.json();
+      
+      const now = new Date();
+      setBreakEndTime(now.toLocaleTimeString());
+      setCurrentStatus("Checked In");
+      
+      // Refresh attendance data
+      fetchAttendanceRecords();
+      
+      setLoading(false);
+    } catch (error) {
+      console.error("Error ending break:", error);
+      setError(error.message);
+      setLoading(false);
+      alert(error.message);
+    }
+  };
+
+  const handleCheckOut = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${API_URL}/attendance/checkout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to check out');
+      }
+
+      const data = await response.json();
+      
+      const now = new Date();
+      setCheckOutTime(now.toLocaleTimeString());
+      setCurrentStatus("Checked Out");
+      
+      // Set total working hours from response
+      if (data.attendance && data.attendance.totalHours) {
+        const hours = Math.floor(data.attendance.totalHours);
+        const minutes = Math.floor((data.attendance.totalHours - hours) * 60);
+        setTotalWorkingHours(`${hours}h ${minutes}m`);
+      }
+      
+      // Refresh attendance data
+      fetchAttendanceRecords();
+      
+      setLoading(false);
+    } catch (error) {
+      console.error("Error during check-out:", error);
+      setError(error.message);
+      setLoading(false);
+      alert(error.message);
+    }
   };
 
   const TodayTasks = [
@@ -118,6 +277,22 @@ const UserDashBoard = () => {
     }
   };
 
+  // Helper function to determine if a button should be disabled
+  const isButtonDisabled = (buttonType) => {
+    switch (buttonType) {
+      case "Check In":
+        return currentStatus !== "Not Started" && currentStatus !== "Checked Out";
+      case "Break":
+        return currentStatus !== "Checked In";
+      case "Break End":
+        return currentStatus !== "On Break";
+      case "Check Out":
+        return currentStatus !== "Checked In";
+      default:
+        return false;
+    }
+  };
+
   return (
     <div className="bg-gray-50 min-h-screen p-8">
       <div className="container mx-auto">
@@ -135,9 +310,9 @@ const UserDashBoard = () => {
           <div className="flex items-center">
             <div className={`
               rounded-full px-4 py-2 flex items-center gap-2 shadow-md
-              ${currentStatus === "Check-in" ? "bg-green-500 text-white" : 
-                currentStatus === "Break" ? "bg-amber-500 text-white" : 
-                currentStatus === "Check-Out" ? "bg-red-500 text-white" : 
+              ${currentStatus === "Checked In" ? "bg-green-500 text-white" : 
+                currentStatus === "On Break" ? "bg-amber-500 text-white" : 
+                currentStatus === "Checked Out" ? "bg-red-500 text-white" : 
                 "bg-gray-300 text-gray-700"
               }
             `}>
@@ -146,6 +321,19 @@ const UserDashBoard = () => {
             </div>
           </div>
         </div>
+
+        {/* Error display */}
+        {error && (
+          <div className="bg-red-100 text-red-800 p-4 rounded-lg mb-6">
+            <p>{error}</p>
+            <button 
+              className="text-red-600 underline mt-2" 
+              onClick={() => setError(null)}
+            >
+              Clear
+            </button>
+          </div>
+        )}
 
         {/* Time Tracking Grid */}
         <div className="grid md:grid-cols-5 gap-6 mb-10">
@@ -196,6 +384,7 @@ const UserDashBoard = () => {
                 ${item.bgColor} ${item.textColor} 
                 rounded-xl shadow-md p-6 transform transition-all 
                 hover:scale-105 hover:shadow-lg
+                ${loading ? 'opacity-70' : ''}
               `}
             >
               <div className="flex justify-between items-center">
@@ -206,9 +395,11 @@ const UserDashBoard = () => {
                 {item.onClick ? (
                   <button 
                     onClick={item.onClick} 
+                    disabled={loading || isButtonDisabled(item.title)}
                     className={`
                       ${item.textColor} bg-white rounded-full p-3 
                       hover:bg-opacity-80 transition-all
+                      ${(loading || isButtonDisabled(item.title)) ? 'opacity-50 cursor-not-allowed' : ''}
                     `}
                   >
                     {item.icon}
