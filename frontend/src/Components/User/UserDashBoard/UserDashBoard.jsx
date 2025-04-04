@@ -14,6 +14,7 @@ const UserDashBoard = () => {
   const [attendanceData, setAttendanceData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [employeeTask, setEmployeeTask] = useState([]);
 
   const token = localStorage.getItem("jwtToken") || sessionStorage.getItem("jwtToken");
 
@@ -109,6 +110,34 @@ const UserDashBoard = () => {
       setLoading(false);
     }
   };
+
+  const getEmployeeTasks = async () => {
+    try {
+      const response = await fetch(`${API_URL}/task/EmployeeTask`, {
+        method: "GET",
+        headers:{
+          "content-type":"application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      })
+
+      if(!response.ok){
+        throw new Error("Failed to fetch tasks")
+      }
+
+      const data = await response.json()
+      setEmployeeTask(data.tasks)
+
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+      setError(error.message);      
+    }
+  }
+
+  useEffect(() => {
+    getEmployeeTasks()
+  }, []);
+
 
   const handleCheckIn = async () => {
     try {
@@ -253,26 +282,11 @@ const UserDashBoard = () => {
     }
   };
 
-  const TodayTasks = [
-    {
-      task: "Meeting With Your Senior",
-      priority: "high"
-    },
-    {
-      task: "Taking Interview of New Employees",
-      priority: "medium"
-    },
-    {
-      task: "Complete Pending Work from Yesterday",
-      priority: "low"
-    },
-  ];
-
   const getPriorityColor = (priority) => {
     switch(priority) {
-      case 'high': return 'bg-red-100 text-red-800';
-      case 'medium': return 'bg-yellow-100 text-yellow-800';
-      case 'low': return 'bg-green-100 text-green-800';
+      case 'High': return 'bg-red-100 text-red-800';
+      case 'Medium': return 'bg-yellow-100 text-yellow-800';
+      case 'Low': return 'bg-green-100 text-green-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -421,7 +435,7 @@ const UserDashBoard = () => {
             Today's Tasks
           </h2>
           <div className="space-y-4">
-            {TodayTasks.map((task, index) => (
+            {employeeTask.map((task, index) => (
               <div 
                 key={index} 
                 className={`
@@ -430,7 +444,7 @@ const UserDashBoard = () => {
                   hover:shadow-md transition-all
                 `}
               >
-                <span className="font-medium">{task.task}</span>
+                <span className="font-medium">{task.description}</span>
                 <span className="text-sm capitalize font-semibold">
                   {task.priority} Priority
                 </span>

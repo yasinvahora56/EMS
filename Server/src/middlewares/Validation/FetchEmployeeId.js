@@ -1,11 +1,11 @@
 import jwt from "jsonwebtoken"; // ✅ Importing jsonwebtoken for token verification
 
 
-const FetchEmployeeId = (req, res, next) => {
+export const fetchEmployeeId = (req, res, next) => {
     try {
         const authHeader = req.headers.authorization || req.headers.Authorization;
 
-        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        if (!authHeader.startsWith("Bearer ")) {
             return res.status(401).json({ message: "Unauthorized, Token Missing" });
         }
 
@@ -16,7 +16,10 @@ const FetchEmployeeId = (req, res, next) => {
 
         console.log("Decoded Token:", decoded); // Debugging
 
-        req.employeeId = decoded.userId || decoded._id;
+        req.role = decoded.role;
+        console.log("Decoded Role:", req.role); // Debugging
+
+        req.employeeId =  decoded._id;
         
         if (!req.employeeId) {
             return res.status(400).json({ message: "Invalid Token: Employee ID missing" });
@@ -29,4 +32,3 @@ const FetchEmployeeId = (req, res, next) => {
         return res.status(403).json({ message: "Invalid Token", error: error.message });
     }
 };
-export default FetchEmployeeId;

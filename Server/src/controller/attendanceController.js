@@ -3,9 +3,17 @@ import AttandanceSchema from "../model/AttandanceModel.js"
 export const getAttendanceRecords = async (req, res) => {
     try {
         const employeeId = req.employeeId;
-        
-        // Find all records for this employee, sorted by most recent first
-        const records = await AttandanceSchema.find({ employeeId }).sort({ createdAt: -1 });
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Set time to 00:00:00
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1); // Next day 00:00:00
+
+        // Find records only for today
+        const records = await AttandanceSchema.find({
+            employeeId,
+            createdAt: { $gte: today, $lt: tomorrow } // Filter today’s records
+        }).sort({ createdAt: -1 });
         
         res.status(200).json({
             message: "Attendance records retrieved",

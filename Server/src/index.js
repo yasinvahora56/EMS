@@ -5,6 +5,8 @@ import bodyParser from "body-parser"
 import mongoose from "mongoose";
 import authRouter from "./Routes/authRouter.js";
 import attendanceRouter from "./Routes/attendanceRoute.js"
+import taskRouter from "./Routes/taskRoutes.js"
+import updateProfileRouter from "./Routes/updateProfileRoute.js"
 
 const app = express()
 app.use(bodyParser.json())
@@ -14,6 +16,8 @@ app.use(cors())
 const URL = process.env.MONGOCONNECTION
 app.use('/auth', authRouter) 
 app.use('/attendance', attendanceRouter)
+app.use('/task', taskRouter)
+app.use('/update', updateProfileRouter)
 
 mongoose.connect(URL)
     .then(() => {

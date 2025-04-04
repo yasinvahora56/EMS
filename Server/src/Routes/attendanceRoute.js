@@ -6,15 +6,15 @@ import {
     getAttendanceRecords, 
     startBreak
 } from '../controller/attendanceController.js';
-import FetchEmployeeId from '../middlewares/Validation/FetchEmployeeId.js';
+import {fetchEmployeeId} from '../middlewares/Validation/fetchEmployeeId.js';
 
 const routes = express.Router();
 
-routes.get('/records', FetchEmployeeId, getAttendanceRecords);
-routes.post("/checkin", FetchEmployeeId, checkin);
-routes.post('/checkout', FetchEmployeeId, checkout);
-routes.post("/startBreak", FetchEmployeeId, startBreak)
-routes.post("/endBreak", FetchEmployeeId, endBreak)
+routes.get('/records', fetchEmployeeId, getAttendanceRecords);
+routes.post("/checkin", fetchEmployeeId, checkin);
+routes.post('/checkout', fetchEmployeeId, checkout);
+routes.post("/startBreak", fetchEmployeeId, startBreak)
+routes.post("/endBreak", fetchEmployeeId, endBreak)
 
 export default routes;
 

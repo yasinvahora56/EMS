@@ -33,7 +33,8 @@ const Login = () => {
           const response = await fetch (url, {
             method : "POST",
             headers: {
-              'Content-Type':'application/json'
+              'Content-Type':'application/json',
+              "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
             },
             body: JSON.stringify(loginInfo)
           })
@@ -43,8 +44,12 @@ const Login = () => {
             handleSuccess(message);
             localStorage.setItem("jwtToken", result.jwtToken);
             localStorage.setItem("name", result.name);
+            localStorage.setItem("email", result.email);
+            localStorage.setItem("gender", result.gender);
+            localStorage.setItem("joindate", result.joindate);
             localStorage.setItem("designation", result.designation);
             localStorage.setItem("role", result.role);
+            localStorage.setItem("course", result.course)
             setTimeout(() => {
               if(result.role === "employee"){
               navigate('/employee');

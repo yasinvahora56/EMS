@@ -102,11 +102,11 @@ const SideBar = () => {
             <div key={employee.id} className={`flex transition-all duration-300 ${expended ? "flex-row gap-3 items-center" : "flex-col items-center"}`}>
               {expended && (
                 <>
-                  <img 
+                  {/* <img 
                     src={employee.logo} 
                     className="w-14 h-14 rounded-full border-2 border-blue-500 shadow-md" 
                     alt="Profile" 
-                  />
+                  /> */}
                   <div className='flex flex-col text-center'>
                     <h1 className='font-bold text-xl text-gray-800'>{logdinUser}</h1>
                     <p className='text-sm text-gray-500 font-light'>{userDesignation}</p>

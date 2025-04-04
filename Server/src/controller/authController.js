@@ -17,7 +17,7 @@ export const login = async (req, res) => {
                 .json({msg: errmessage, success: false})
          }
          const jwtToken = jwt.sign(
-            {email: user.email, _id : user.id, role: user.role, designation: user.designation},
+            {email: user.email, name: user.name, _id : user.id, role: user.role, designation: user.designation, course: user.course, joindate: user.joindate},
             process.env.JWT_SECRET,
             { expiresIn: "24h" }
          )
@@ -26,10 +26,14 @@ export const login = async (req, res) => {
                 msg: "Login Success",
                 success:true,
                 jwtToken,
-                name: user.name,
                 email: user.email,
+                name: user.name,
+                gender: user.gender,
+                id: user._id,
                 role: user.role,
-                designation: user.designation
+                designation: user.designation,
+                course: user.course,
+                joindate: user.joindate,
             })
 
     } catch (error) {

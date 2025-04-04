@@ -45,7 +45,7 @@ const SideNav = ({ toggleSidebar }) => {
         {/* Logo Section */}
         <div className="p-4 flex justify-between items-center border-b border-gray-600">
           <div className="flex items-center gap-3">
-            {expended && <img src={logo} className="w-14 h-14 rounded-full" alt="Logo" />}
+            {/* {expended && <img src={logo} className="w-14 h-14 rounded-full" alt="Logo" />} */}
             {expended && (
               <div>
                 <h1 className="font-bold text-lg">{logedinAdmin}</h1>
