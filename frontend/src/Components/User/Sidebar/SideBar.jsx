@@ -1,23 +1,46 @@
-import asad_master from '../Images/asad_master.jpg';
 import { Home, User, LogOut, ChevronRight, ChevronLeft, Menu, X } from 'lucide-react';
 import { Link } from "react-router-dom";
-import { useState, useEffect } from 'react';
-import { enqueueSnackbar } from 'notistack'
+import { useState, useEffect, use } from 'react';
 import { useNavigate } from "react-router-dom";
 import { ImProfile } from "react-icons/im";
 import { SlCalender } from "react-icons/sl";
-import { IoFingerPrint } from "react-icons/io5";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { handleError } from '../../../../utils';
 import { ToastContainer } from 'react-toastify';
+import { BACKEND_URL, token } from '../../../config/config';
 
 const SideBar = () => {
+  const navigate = useNavigate();
   const [expended, setExpended] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [logdinUser, setLogdinUser] = useState('')
-  const [userDesignation, setUserDesignation] = useState('')
-  const navigate = useNavigate();
+
+  const [userData, setUserData] = useState({})
+
+  const fetchUserData = async () => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/profile/myProfile`,{
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      })
+      const data = await response.json()
+      if(response.ok){
+        setUserData({
+          name: data.employeeData.name || "Guest",
+          designation: data.employeeData.designation || "Not Available"
+        })
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error)
+      handleError("Error fetching user data")              
+    }
+  }
+
+  useEffect(() => {
+    fetchUserData()
+  }, [])
 
   // Check screen size and set mobile view
   useEffect(() => {
@@ -40,15 +63,6 @@ const SideBar = () => {
     return () => window.removeEventListener('resize', checkMobileView);
   }, []);
 
-  useEffect(() => {
-    const storedName = localStorage.getItem("name") || "Guest";
-    const storedDesignation = localStorage.getItem("designation") || "Not Available";
-
-    setLogdinUser(storedName)
-    setUserDesignation(storedDesignation)
-
-  }, [])
-
   const logOutHandle = (e) => {
     localStorage.removeItem('jwtToken')
     localStorage.removeItem('name')
@@ -57,17 +71,6 @@ const SideBar = () => {
       navigate('/login')
     }, 1000)
   }
-
-  
-
-  const EmployeeData = [
-    {
-      id: 1,
-      name: "Asad Master",
-      designation: "Developer",
-      logo: asad_master,
-    },
-  ]
 
   const NavLinks = [
     { 
@@ -98,8 +101,7 @@ const SideBar = () => {
       <nav className={`h-full bg-gradient-to-b from-gray-50 to-gray-100 shadow-2xl border-r border-gray-200 flex flex-col`}>
         {/* Logo Section */}
         <div className={`p-4 pb-8 flex items-center transition-all duration-300 ${expended ? "justify-between" : "justify-center"}`}>
-          {EmployeeData.map((employee) => (
-            <div key={employee.id} className={`flex transition-all duration-300 ${expended ? "flex-row gap-3 items-center" : "flex-col items-center"}`}>
+            <div className={`flex transition-all duration-300 ${expended ? "flex-row gap-3 items-center" : "flex-col items-center"}`}>
               {expended && (
                 <>
                   {/* <img 
@@ -108,13 +110,12 @@ const SideBar = () => {
                     alt="Profile" 
                   /> */}
                   <div className='flex flex-col text-center'>
-                    <h1 className='font-bold text-xl text-gray-800'>{logdinUser}</h1>
-                    <p className='text-sm text-gray-500 font-light'>{userDesignation}</p>
+                    <h1 className='font-bold text-xl text-gray-800'>{userData.name}</h1>
+                    <p className='text-sm text-gray-500 font-light'>{userData.designation}</p>
                   </div>
                 </>
               )}
             </div>
-          ))}
           
           <button 
             onClick={() => setExpended(!expended)} 
@@ -184,19 +185,18 @@ const SideBar = () => {
     <>
       {/* Mobile Header */}
       <div className="md:hidden fixed top-0 left-0 right-0 bg-white shadow-md z-50 flex justify-between items-center p-4">
-        {EmployeeData.map((employee) => (
-          <div key={employee.id} className="flex items-center space-x-3">
+       
+          <div  className="flex items-center space-x-3">
             <img 
-              src={employee.logo} 
               className="w-10 h-10 rounded-full border-2 border-blue-500" 
               alt="Profile" 
             />
             <div>
-              <h1 className='font-bold text-lg text-gray-800'>{logdinUser}</h1>
-              <p className='text-xs text-gray-500 font-light'>{userDesignation}</p>
+              <h1 className='font-bold text-lg text-gray-800'>{userData.name}</h1>
+              <p className='text-xs text-gray-500 font-light'>{userData.designation}</p>
             </div>
           </div>
-        ))}
+   
         
         <button 
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
