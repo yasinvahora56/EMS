@@ -1,72 +1,69 @@
 import { useEffect, useState } from 'react';
-import logo from '../Images/logo.jpg';
+import { BACKEND_URL, token } from '../../../config/config';
 
 const Profile = () => {
 
-    const [modal, setModal] = useState();
-    const [adminName, setAdminName] = useState();
-    const [adminEmail, setAdminEmail] = useState();
-    const [adminDesignation, setAdminDesignation] = useState();
-    const [adminPassword, setAdminPassword] = useState();
-    const [adminJoinDate, setAdminJoinDate] = useState();
-
-    useEffect(() => {
-        const storedName = localStorage.getItem("name") || "Guest"
-        const storedEmail = localStorage.getItem("email") || "Guest"
-        const storedPassword = localStorage.getItem("password") || ""
-        const storedDesignation = localStorage.getItem("designation") || "Guest"
-        const storedJoinDate = localStorage.getItem("joindate") || "Guest"
-
-        setAdminName(storedName)
-        setAdminEmail(storedEmail)
-        setAdminPassword(storedPassword)
-        setAdminDesignation(storedDesignation)
-        setAdminJoinDate(storedJoinDate)
-
-    }, [])
+    const [isModalOpen, setIsModalOpen] = useState();
+    const [adminData, setAdminData] = useState({
+        name: "",
+        email: "",
+        designation: "",
+        joindate: "",
+    });
+    const [editData, setEditData] = useState({});
 
     const toggleModal = () => {
-        setModal(!modal);
-    }
-
-    const handleChange = (e) => {
-        const {name, value} = e.target
-        if(name === "name") setAdminName(value)
-        if(name === "email") setAdminEmail(value)
-        if(name === "designation") setAdminDesignation(value)
-        if(name === "joindate") setAdminJoinDate(value)
-        if(name === "password") setAdminPassword(value)
-    }
-
-    const token = localStorage.getItem("jwtToken")
-    const handleSubmit = async () => {
-        e.preventDefault()
-
-        const updatedData = {
-            name: adminName,
-            email: adminEmail,
-            designation: adminDesignation,
-            joindate: adminJoinDate,
-            password: adminPassword
+        if(!isModalOpen){
+            setEditData({ ...adminData })
         }
+        setIsModalOpen(!isModalOpen);
+    }
 
+    const fetchAdminProfile = async () => {
+        try {
+            const response = await fetch(`${BACKEND_URL}/profile/myProfile`, {
+                method: "GET",
+                headers: {
+                    "Authorization" : `Bearer ${ token }`
+                }
+            })
+            const data = await response.json()
+            if(response.ok){
+                setAdminData({
+                    name: data.employeeData.name || "Not Available",
+                    email: data.employeeData.email || "Not Available",
+                    designation: data.employeeData.designation || "Not Available",
+                    gender: data.employeeData.gender || "Not Available",
+                    course: data.employeeData.course || "Not Available",
+                    role: data.employeeData.role || "Not Available",
+                    joindate: data.employeeData.joindate || "Not Available",
+                })
+            }
+        } catch (error) {
+            
+        }
+    }
+
+    useEffect(() => {
+        fetchAdminProfile()
+    }, [])
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
         try{
-            const response = await fetch("http://localhost:8080/update/profile", {
-                method: "PUT",
+            const response = await fetch(`${BACKEND_URL}/profile/update`, {
+                method: "PATCH",
                 headers: {
                     "Content-Type" : "application/json",
                     "Authorization" : `Bearer ${token}`
                 },
-                body: JSON.stringify(updatedData)
+                body: JSON.stringify(editData)
             })
     
             const data = await response.json()
             if(response.ok){
-                localStorage.setItem("name", adminName)
-                localStorage.setItem("email", adminEmail)
-                localStorage.setItem("designation", adminDesignation)
-                localStorage.setItem("joindate", adminJoinDate)
-                localStorage.setItem("password", adminPassword )
+                fetchAdminProfile()
+                toggleModal()
             }else{
                 alert(data.alert || "Error on Updating Data")
             }
@@ -87,21 +84,16 @@ const Profile = () => {
             <div className='bg-white shadow-lg rounded-2xl p-6 max-w-sm text-center'>
              
                     <div className='space-y-4'>
-                        {/* <img src={logo} alt="Profile" className='w-24 h-24 mx-auto rounded-full border-4 border-gray-300' /> */}
-                        <h2 className='text-xl font-semibold text-gray-900'>{adminName}</h2>
-                        <p className='text-gray-600 '>{adminDesignation}</p>
+                        <h2 className='text-xl font-semibold text-gray-900'>{adminData.name}</h2>
+                        <p className='text-gray-600 '>{adminData.designation}</p>
                         <div className='text-left space-y-2 mt-4'>
                             <div className='flex justify-between text-gray-700'>
                                 <span className='font-semibold'>Join Date:</span>
-                                <span>{adminJoinDate}</span>
+                                <span>{adminData.joindate}</span>
                             </div>
                             <div className='flex gap-10 justify-between text-gray-700'>
                                 <span className='font-semibold'>Email:</span>
-                                <span className=''>{adminEmail}</span>
-                            </div>
-                            <div className='flex justify-between text-gray-700'>
-                                <span className='font-semibold'>password:</span>
-                                <span>{adminPassword}</span>
+                                <span className=''>{adminData.email}</span>
                             </div>
                         </div>
                         <button 
@@ -114,7 +106,7 @@ const Profile = () => {
         </div>
         
         <div className=''>
-        {modal && (
+        {isModalOpen && (
                 <div className='fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center'>
                     <form onSubmit={handleSubmit} action="">
                     <div className='bg-white p-6 rounded-lg shadow-xl w-96'>
@@ -125,8 +117,8 @@ const Profile = () => {
                                     <input
                                         type="text"
                                         name="name"
-                                        value={adminName}
-                                        onChange={handleChange}
+                                        value={editData.name}
+                                        onChange={(e) => setEditData({ ...editData, [e.target.name]: e.target.value })}
                                         className="w-full px-4 py-2 border rounded-lg"
                                     />
                                 </div>
@@ -135,8 +127,8 @@ const Profile = () => {
                                     <input
                                         type="text"
                                         name="designation"
-                                        value={adminDesignation}
-                                        onChange={handleChange}
+                                        value={editData.designation}
+                                        onChange={(e) => setEditData({ ...editData, [e.target.name]: e.target.value })}
                                         className="w-full px-4 py-2 border rounded-lg"
                                     />
                                 </div>
@@ -145,8 +137,8 @@ const Profile = () => {
                                     <input
                                         type="email"
                                         name="email"
-                                        value={adminEmail}
-                                        onChange={handleChange}
+                                        value={editData.email}
+                                        onChange={(e) => setEditData({ ...editData, [e.target.name]: e.target.value })}
                                         className="w-full px-4 py-2 border rounded-lg"
                                     />
                                 </div>
@@ -155,31 +147,12 @@ const Profile = () => {
                                     <input
                                         type="text"
                                         name="joindate"
-                                        value={adminJoinDate}
-                                        onChange={handleChange}
+                                        value={editData.joindate}
+                                        onChange={(e) => setEditData({ ...editData, [e.target.name]: e.target.value })}
                                         className="w-full px-4 py-2 border rounded-lg"
+                                        disabled
                                     />
                                 </div>
-                                <div>
-                                    <label htmlFor="password">Password:</label>
-                                    <input
-                                        type="password"
-                                        name="password"
-                                        value={adminPassword}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 border rounded-lg"
-                                    />
-                                </div>
-                                {/* <div>
-                                    <label htmlFor="phone">Phone:</label>
-                                    <input
-                                        type="text"
-                                        name="phone"
-                                        value={editEmployee.phone}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 border rounded-lg"
-                                    />
-                                </div> */}
                                 <div className="flex justify-between mt-4">
                                     <button
                                         className="bg-gray-300 px-4 py-2 rounded-full cursor-pointer"

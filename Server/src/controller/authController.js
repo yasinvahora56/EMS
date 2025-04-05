@@ -4,20 +4,21 @@ import jwt from "jsonwebtoken"
 
 export const login = async (req, res) => {
     try {
-         const { email, password } = req.body
-         const errmessage="Password or id wrong"
+         const { email, password } = req.body        
+
          const user = await UserModel.findOne({ email })
          if(!user) {
-            res.status(409)
-                .json({msg: errmessage, success: false})
+            res.status(403)
+                .json({message: "User Not Found", success: false })
          }
+        
          const isEqueal = await bcrypt.compare(password, user.password)
          if(!isEqueal) {
             res.status(403)
-                .json({msg: errmessage, success: false})
+                .json({ message: "Invalid Credentials",success: false})
          }
          const jwtToken = jwt.sign(
-            {email: user.email, name: user.name, _id : user.id, role: user.role, designation: user.designation, course: user.course, joindate: user.joindate},
+            {_id : user.id, role: user.role},
             process.env.JWT_SECRET,
             { expiresIn: "24h" }
          )
@@ -26,14 +27,8 @@ export const login = async (req, res) => {
                 msg: "Login Success",
                 success:true,
                 jwtToken,
-                email: user.email,
-                name: user.name,
-                gender: user.gender,
                 id: user._id,
-                role: user.role,
-                designation: user.designation,
-                course: user.course,
-                joindate: user.joindate,
+               role: user.role,
             })
 
     } catch (error) {

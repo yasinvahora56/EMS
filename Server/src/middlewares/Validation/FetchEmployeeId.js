@@ -14,10 +14,10 @@ export const fetchEmployeeId = (req, res, next) => {
         // ✅ Verify JWT token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        console.log("Decoded Token:", decoded); // Debugging
+        // console.log("Decoded Token:", decoded); // Debugging
 
         req.role = decoded.role;
-        console.log("Decoded Role:", req.role); // Debugging
+        // console.log("Decoded Role:", req.role); // Debugging
 
         req.employeeId =  decoded._id;
         

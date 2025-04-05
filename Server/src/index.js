@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 import authRouter from "./Routes/authRouter.js";
 import attendanceRouter from "./Routes/attendanceRoute.js"
 import taskRouter from "./Routes/taskRoutes.js"
-import updateProfileRouter from "./Routes/updateProfileRoute.js"
+import profileRouter from "./Routes/profileRoute.js"
 
 const app = express()
 app.use(bodyParser.json())
@@ -17,7 +17,7 @@ const URL = process.env.MONGOCONNECTION
 app.use('/auth', authRouter) 
 app.use('/attendance', attendanceRouter)
 app.use('/task', taskRouter)
-app.use('/update', updateProfileRouter)
+app.use('/profile', profileRouter)
 
 mongoose.connect(URL)
     .then(() => {
