@@ -1,50 +1,64 @@
-import React, { useState } from "react";
-import logo from '../Images/logo.jpg'
-import CreatNewBtn from "./CreatNewBtn";
-import { Plus, Search } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Search } from "lucide-react";
+import { BACKEND_URL, token } from '../../../config/config';
 const Employee = () => {
-  const data = [
-    {
-      id: 1,
-      image: logo, // Replace with actual image URLs
-      name: "Yasin",
-      email: "yasin@gmail.com.com",
-      designation: "Developer",
-      gender: "Male",
-      course: "B.Tech",
-      joinDate: "2023-01-15",
-    },
-    {
-      id: 2,
-      image: logo,
-      name: "Adnan",
-      email: "adnan@gmail.com",
-      designation: "Designer",
-      gender: "Female",
-      course: "B.Sc",
-      joinDate: "2022-05-10",
-    },
-    {
-      id: 3,
-      image: logo,
-      name: "Raiyyan",
-      email: "raiyyan@gmail.com",
-      designation: "Marketing",
-      gender: "Male",
-      course: "MBA",
-      joinDate: "2021-09-20",
-    },
-    {
-      id: 4,
-      image: logo,
-      name: "Asad",
-      email: "asad@gmail.com",
-      designation: "Marketing",
-      gender: "Male",
-      course: "MBA",
-      joinDate: "2021-09-20",
-    },
-  ];
+  const[employeeData, setEmployeeData] = useState([])
+  const[employee, setEmployee] = useState([])
+  const [isModalOpen, setIsModalOpen] = useState();
+const toggleModal = (employeeId) => {
+        // if(!isModalOpen){
+        //     setEditData({ ...adminData })
+        // }
+        fetchEmployee(employeeId)
+        setIsModalOpen(!isModalOpen);
+    }
+
+  const fetchAllEmployee = async () => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/employee/`,{
+        method:"GET",
+        headers: {
+          "content-type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      })
+      const data = await response.json()
+      if(response.ok){
+       
+        if(Array.isArray(data.employeeData)){
+          setEmployeeData(data.employeeData)
+        }else{
+          setEmployeeData([data.employeeData])
+        }
+
+      }
+      console.log("Data fetched Successfully", data)
+    } catch (error) {
+      console.log("Error During Fetch Employee Data",error)
+    }
+  }
+
+  useEffect(() => {
+    fetchAllEmployee()
+  }, [])
+
+  const fetchEmployee = async (employeeId) => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/employee/${employeeId}`, {
+        methode: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      })
+
+      const data = await response.json()
+      if (response.ok) {
+        setEmployee(data.leaves);
+    }
+    } catch (error) {
+      console.log("Error During Fetch One Employee Data",error)
+    }
+  }
 
   const [search, setSearch] = useState('');
  
@@ -66,9 +80,6 @@ const Employee = () => {
               />
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             </div>
-
-            {/* Add New Button */}
-            <CreatNewBtn/>
           </div>
 
           {/* 🔹 Employee Table */}
@@ -77,7 +88,6 @@ const Employee = () => {
               <thead className="bg-gray-200">
                 <tr className="text-gray-600 uppercase text-sm leading-normal">
                   <th className="py-3 px-4 text-left">Id</th>
-                  <th className="py-3 px-4 text-left">Image</th>
                   <th className="py-3 px-4 text-left">Name</th>
                   <th className="py-3 px-4 text-left">Email</th>
                   <th className="py-3 px-4 text-left">Designation</th>
@@ -87,27 +97,92 @@ const Employee = () => {
                 </tr>
               </thead>
               <tbody className="text-gray-700 text-sm">
-                {data.filter(employee => 
+                {employeeData.filter(employee => 
                   search.toLowerCase() === '' ? employee : employee.name.toLowerCase().includes(search.toLowerCase())
                 ).map((employee) => (
-                  <tr key={employee.id} className="border-b border-gray-200 hover:bg-gray-100 transition">
+                  <tr key={employee.id} onClick={() => toggleModal(employee._id)} className="border-b border-gray-200 hover:bg-gray-100 transition">
                     <td className="py-3 px-4">{employee.id}</td>
-                    <td className="py-3 px-4">
-                      <img src={employee.image} alt={employee.name} className="w-10 h-10 rounded-full" />
-                    </td>
                     <td className="py-3 px-4">{employee.name}</td>
                     <td className="py-3 px-4">{employee.email}</td>
                     <td className="py-3 px-4">{employee.designation}</td>
                     <td className="py-3 px-4">{employee.gender}</td>
                     <td className="py-3 px-4">{employee.course}</td>
-                    <td className="py-3 px-4">{employee.joinDate}</td>
+                    <td className="py-3 px-4">{employee.joindate}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         </div>
-
+        <div className=''>
+        {isModalOpen && (
+                <div className='fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center'>
+                    
+                    <div className='bg-white p-6 rounded-lg shadow-xl w-96'>
+                    <div className="flex justify-between mt-4">
+                                    <button
+                                        className="bg-gray-300 px-4 py-2 rounded-full cursor-pointer"
+                                        onClick={toggleModal}
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            <div className='space-y-4'>
+                                <div>
+                                    <label htmlFor="name">Name:</label>
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        value={"hey"}
+                                        className="w-full px-4 py-2 border rounded-lg"
+                                        disabled
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="name">Email:</label>
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        value={employee.name}
+                                        className="w-full px-4 py-2 border rounded-lg"
+                                        disabled
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="designation">Designation:</label>
+                                    <input
+                                        type="text"
+                                        name="designation"
+                                        value={"Hey"}
+                                        className="w-full px-4 py-2 border rounded-lg"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="email">Email:</label>
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        value={"Hey"}
+                                        className="w-full px-4 py-2 border rounded-lg"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="joindate">Join Date:</label>
+                                    <input
+                                        type="text"
+                                        name="joindate"
+                                        value={"hey"}
+                                        className="w-full px-4 py-2 border rounded-lg"
+                                        disabled
+                                    />
+                                </div>
+                                
+                            </div>
+                    </div>
+                   
+                </div>
+            )}
+        </div>
    
     </>
   );
