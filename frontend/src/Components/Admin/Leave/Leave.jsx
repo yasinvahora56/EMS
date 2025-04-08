@@ -3,6 +3,7 @@ import { BACKEND_URL, token } from '../../../config/config';
 
 const Leave = () => {
     const [leaveData, setLeaveData] = useState([]);
+    const[employeeData, setEmployeeData] = useState([])
 
     const handleDelete = async (e, leaveId) => {
         e.preventDefault();
@@ -27,14 +28,30 @@ const Leave = () => {
         }
     }
 
-    const handleReject = async (e, leaveId) => {
+    const handleStatus = async (e, leaveId, leaveStatus) => {
         e.preventDefault();
-        // Implement reject functionality
-    }
-    
-    const handleApprove = async (e, leaveId) => {
-        e.preventDefault();
-        // Implement approve functionality
+        try {
+            const response = await fetch(`${BACKEND_URL}/leave/update/${leaveId}`, {
+                method: "PATCH",
+                headers: {
+                    "content-type" : "application/json",
+                    "Authorization" : `Bearer ${token}`
+                },
+                body: JSON.stringify({ status: leaveStatus})
+            })
+            if(!response.ok){
+                throw new Error("Failed to Update Leave");
+            }
+            const data = await response.json();
+            setLeaveData(prevStatus =>
+                prevStatus.map(leave => 
+                    leave._id === leaveId ? { ...leave, status: leaveStatus} : leave
+                )
+            )
+            console.log("Leave updated:", data.message);
+        } catch (error) {
+            console.error("Error updating leave status:", error);
+        }
     }
 
     const fetchAllLeaveData = async () => {
@@ -59,6 +76,35 @@ const Leave = () => {
     useEffect(() => {
         fetchAllLeaveData();
     }, []);
+
+     const fetchEmployee = async () => {
+        try {
+          const response = await fetch(`${BACKEND_URL}/employee/`,{
+            method:"GET",
+            headers: {
+              "content-type": "application/json",
+              "Authorization": `Bearer ${token}`
+            }
+          })
+          const data = await response.json()
+          if(response.ok){
+           
+            if(Array.isArray(data.employeeData)){
+              setEmployeeData(data.employeeData)
+            }else{
+              setEmployeeData([data.employeeData])
+            }
+    
+          }
+          console.log("Data fetched Successfully", data)
+        } catch (error) {
+          console.log("Error During Fetch Employee Data",error)
+        }
+      }
+    
+      useEffect(() => {
+        fetchEmployee()
+      }, [])
 
     return (
         <div className="container mx-auto px-4 py-8 max-w-7xl">
@@ -91,32 +137,52 @@ const Leave = () => {
                                 </div>
                                 <div>
                                     <h2 className="font-medium text-blue-800">{leave.name}</h2>
+                                        <p>devloper</p>
                                 </div>
                             </div>
                         </div>
                         
                         <div className="p-4 flex justify-end gap-3">
-                            <button 
+                            {leave.status == "Pending" && (
+                                <>
+                                <button 
                                 className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors"
-                                onClick={(e) => handleReject(e, leave._id)}
+                                onClick={(e) => handleStatus(e, leave._id, "Rejected")}
                             >
                                 Reject
                             </button>
                             <button 
                                 className="px-4 py-2 bg-blue-400 hover:bg-blue-700 text-white rounded-md transition-colors"
-                                onClick={(e) => handleApprove(e, leave._id)}
+                                onClick={(e) => handleStatus(e, leave._id, "Approved")}
                             >
                                 Approve
                             </button>
+                                </>
+                            )}
+                            {leave.status == "Approved" && (
+                                <>
+                                    <div className='flex items-center gap-2 p-4 text-center px-4 py-1 rounded-full bg-blue-100 text-blue-700 font-medium '>
+                                        <h1 className='text-green-500'>{leave.status}</h1>
+                                    </div>
+                                </>
+                            )}
+                            {leave.status == "Rejected" && (
+                               <>
+                               <div className='flex items-center gap-2 p-4 text-center px-4 py-1 rounded-full bg-blue-100 text-blue-700 font-medium '>
+                                   <h1 className='text-red-500'>{leave.status}</h1>
+                               </div>
+                           </>
+                            )}
                         </div>
+
                     </div>
                 ))}
             </div>
             
             {leaveData.length === 0 && (
-                <div className="flex flex-col items-center justify-center ">
-                    <div className="text-blue-400 text-xl mb-3">No leave requests found</div>
-                </div>
+               <div className="flex flex-col items-center justify-center p-12 bg-white rounded-lg shadow-md border border-blue-100">
+               <div className="text-blue-400 text-xl mb-3">No leave requests found</div>
+             </div>
             )}
         </div>
     );

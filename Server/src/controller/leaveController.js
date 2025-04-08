@@ -35,6 +35,7 @@ export const createLeaveRequest = async (req, res) => {
 export const getAllLeaveRequests = async (req, res) => {
     try {
         const leaves = await leaveModel.find().sort({ createdAt: -1 })
+        
         res.status(200)
             .json({ messsage: "Leave Successfully Fetched", leaves})
     } catch (error) {
@@ -59,6 +60,44 @@ export const getLeaveRequest = async (req, res) => {
             .json({message: "Error During Get Leave Request", error: error.message})
     }
 }
+
+export const updateLeaveRequest = async (req, res) => {
+
+    try {
+        const { status } = req.body
+        const leaveId = req.params.id
+
+        if(!leaveId){
+            res.status(401)
+                .json({message: "Leave id is Required"})
+        }
+        if(!status){
+            res.status(401)
+                .json({message: "status is Required"})
+        }
+        const leave = await leaveModel.findById(leaveId)
+        if(!leave){
+            return res.status(404)
+                .json({meassage: "Leave Not Fornd"})
+        }
+        leave.status = status
+        await leave.save()
+        res.status(200)
+            .json({message: "Leave Updated Successfully", leave})
+        // if(leave.status === "approved"){
+        //     res.status(200)
+        //         .json({message: "Leave Approved Successfully"})
+        // }else if(leave.status === "rejected"){
+        //     res.status(200)
+        //         .json({message: "Leave Rejected Successfully"})
+        // }
+
+    } catch (error) {
+        res.status(500).json({ message:"Error During Update Leave", error: error.message }); 
+    }
+
+}
+
 export const deleteLeaveRequest = async (req, res) => {
     try {
         const {id} = req.params

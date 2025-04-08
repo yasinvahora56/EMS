@@ -8,6 +8,7 @@ import attendanceRouter from "./Routes/attendanceRoute.js"
 import taskRouter from "./Routes/taskRoutes.js"
 import profileRouter from "./Routes/profileRoute.js"
 import leaveRouter from "./Routes/leaveRoutes.js"
+import employeeRouter from "./Routes/employeeRoute.js"
 
 const app = express()
 app.use(bodyParser.json())
@@ -20,6 +21,7 @@ app.use('/attendance', attendanceRouter)
 app.use('/task', taskRouter)
 app.use('/profile', profileRouter)
 app.use('/leave', leaveRouter)
+app.use('/employee', employeeRouter)
 
 mongoose.connect(URL)
     .then(() => {
