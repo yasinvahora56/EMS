@@ -3,28 +3,12 @@ import { FaHourglassHalf } from "react-icons/fa";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { AiFillClockCircle } from "react-icons/ai";
 
-
-
-/*************  ✨ Codeium Command ⭐  *************/
-/**
- * A component that displays attendance data for employees.
- * 
- * The component renders a summary of attendance statistics and a detailed attendance table.
- * 
- * Attendance data includes information such as employee name, time, date, and status.
- * Status can be "Present", "Absent", "On Leave", or "Half Day", each represented with
- * specific styling and icons.
- * 
- * @returns {JSX.Element} A JSX element containing the attendance display.
- */
-
-/******  b583dd18-d072-42a4-920d-97ad1436cb11  *******/
 const Attandance = () => {
 
     const Data = [
         {
             id: 1,
-            name: "Yasin",
+            name: "Abdul Aziz",
             time: "10:25:50 AM",
             date: "13-02-2025",
             status: "Present",
