@@ -39,11 +39,12 @@ const Login = () => {
           })
           const result = await response.json()
           const { success, message, error } = result
+          console.log(result)
           if (success) {
             handleSuccess(message);
             localStorage.setItem("jwtToken", result.jwtToken);
             localStorage.setItem("role", result.role);
-            localStorage.setItem("id", result._id);
+            localStorage.setItem("id", result.id);
             setTimeout(() => {
               if(result.role === "employee"){
               navigate('/employee');

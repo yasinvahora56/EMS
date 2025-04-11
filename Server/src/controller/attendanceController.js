@@ -71,7 +71,7 @@ export const checkin = async (req, res) => {
 };
 export const checkout = async (req, res) => {
     try {
-        console.log("Employee ID from request:", req.employeeId); // 🔍 Debugging
+        // console.log("Employee ID from request:", req.employeeId); // 🔍 Debugging
 
         const employeeId = req.employeeId;
 
