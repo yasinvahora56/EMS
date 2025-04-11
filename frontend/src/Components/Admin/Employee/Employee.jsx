@@ -137,13 +137,13 @@ const Employee = () => {
               {employeeData.filter(employee => 
                 search.toLowerCase() === '' ? employee : 
                 (employee.name && employee.name.toLowerCase().includes(search.toLowerCase()))
-              ).map((employee) => (
+              ).map((employee, index) => (
                 <tr 
                   key={employee._id || employee.id} 
                   onClick={() => toggleModal(employee)} // Pass entire employee object
                   className="border-b border-gray-200 hover:bg-gray-100 transition cursor-pointer"
                 >
-                  <td className="py-3 px-4">{employee.id}</td>
+                  <td className="py-3 px-4">{index + 1}</td>
                   <td className="py-3 px-4">{employee.name}</td>
                   <td className="py-3 px-4">{employee.email}</td>
                   <td className="py-3 px-4">{employee.designation}</td>

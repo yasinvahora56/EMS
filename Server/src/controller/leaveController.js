@@ -2,14 +2,6 @@ import leaveModel from "../model/leaveModel.js"
 
 export const createLeaveRequest = async (req, res) => {
     try {
-
-        const employeeId = req.employeeId
-        console.log(employeeId)
-        // const employeeData = await leaveRequestModel.findById(employeeId)
-        // if(!employeeData){
-        //     res.status(402)
-        //         .json({message: "Employee Not Found"})
-        // }
         const { name, startDate, endDate, description} = req.body
         console.log(name, startDate, endDate, description)
         if( !name || !startDate || !endDate || !description){
@@ -17,7 +9,6 @@ export const createLeaveRequest = async (req, res) => {
                 .json({ message: "All Feilds are Require", error: error.message})
         }
         const leave = new leaveModel({
-            employeeId,
             name,
             startDate,
             endDate,

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaUser, FaMoneyCheckAlt } from "react-icons/fa";
-import { MdPendingActions, MdWork, MdAddTask, MdTask, MdDeleteForever } from "react-icons/md";
+import { MdPendingActions, MdAddTask, MdTask, MdDeleteForever } from "react-icons/md";
 import { BACKEND_URL, token } from "../../../config/config";
 
 const DashBoard = () => {
