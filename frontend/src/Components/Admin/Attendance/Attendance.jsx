@@ -1,14 +1,13 @@
-import { Backpack, CheckCircleIcon, ClockIcon, XCircleIcon } from "lucide-react";
+import { CheckCircleIcon, Search, XCircleIcon } from "lucide-react";
 import { FaHourglassHalf } from "react-icons/fa";
-import { AiFillCheckCircle } from "react-icons/ai";
-import { AiFillClockCircle } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { BACKEND_URL, token } from "../../../config/config";
+import Attandance from "../Attandance/Attendance.jsx"
 
-const Attandance = () => {
-
-  const [attendance, setAttendance] = useState([])
-
+const Attendance = () => {
+  const [attendance, setAttendance] = useState([]);
+  const [dateTime, setDateTime] = useState();
+  const [search, setSearch] = useState('');
 
   const fetchAttendance = async () => {
     try {
@@ -18,108 +17,120 @@ const Attandance = () => {
           "content-type": "application/json",
           "Authorization": `Bearer ${token}`
         }
-      })
+      });
 
-      const data = await response.json()
-      
+      const data = await response.json();
       if (response.ok) {
-        console.log("Data fetched Successfully", data.employeeData)
-        setAttendance(data.employeeData)
+        console.log("Data fetched Successfully", data.employeeData);
+        setAttendance(data.employeeData);
       }
     } catch (error) {
       console.error("Error fetching attendance:", error);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchAttendance()
-  },[])
+    fetchAttendance();
+  }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date();
+      const date = now.toLocaleDateString('en-US', {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      });
+      const time = now.toLocaleTimeString('en-US', {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      });
+      setDateTime(`${date} | ${time}`);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
-    const statusColor = (status) => {
-        switch (status) {
-          case "Present":
-            return "bg-green-200 text-green-700";
-          case "Absent":
-            return "bg-red-200 text-red-700";
-          case "On Leave":
-            return "bg-yellow-200 text-yellow-700";
-          default:
-            return "bg-gray-200 text-gray-700";
-        }
-      };
+  const statusConfig = {
+    "Checked In": {
+      bg: "bg-green-500 text-white",
+      icon: <CheckCircleIcon className="w-5 h-5 mr-1" />,
+    },
+    "On Break": {
+      bg: "bg-amber-500 text-white",
+      icon: <FaHourglassHalf className="w-4 h-4 mr-1" />,
+    },
+    "Checked Out": {
+      bg: "bg-red-500 text-white",
+      icon: <XCircleIcon className="w-5 h-5 mr-1" />,
+    },
+  };
 
-      const statusConfig = {
-        Present: { bg: "bg-green-100 text-green-700", icon: <CheckCircleIcon className="w-5 h-5 inline-block mr-1" /> },
-        Late: { bg: "bg-green-100 text-green-700", icon: <CheckCircleIcon className="w-5 h-5 inline-block mr-1" /> },
-        "Half Day": { bg: "bg-amber-100 text-amber-700", icon: <CheckCircleIcon className="w-5 h-5 inline-block mr-1" /> },
-        Absent: { bg: "bg-red-100 text-red-700", icon: <XCircleIcon className="w-5 h-5 inline-block mr-1" /> },
-        "On Leave": { bg: "bg-yellow-100 text-yellow-700", icon: <ClockIcon className="w-5 h-5 inline-block mr-1" /> },
-      };
-
-      const AttandanceData = [
-        {
-          number:3,
-          type:"Late",
-          icon:<FaHourglassHalf/>,
-        },
-        {
-          number:4,
-          type:"Present",
-          icon: <AiFillCheckCircle color="green"/>,
-        },
-        {
-          number:2,
-          type:"Absent",
-          icon: <AiFillCheckCircle color="red"/>,
-        },
-        {
-          number:1,
-          type:"Half Day",
-          icon: <AiFillClockCircle/>,
-        },
-      ]
-
+  
+  
 
   return (
-    <div className="flex flex-col gap-4 items-center justify-center">
-      <div className="flex flex-row">
-      <h2 className="font-bold text-2xl text-black mb-6 text-start">📅 Attendance Records</h2>
-      <h1 className="font-bold text-2xl my-4 flex">18/02/2025<span className="mx-2">Tuesday</span></h1>
-      </div>
-    <div className="w-250 flex">     
-    <section className="">
-      <div className="overflow-hidden rounded-xl shadow-lg bg-white border border-gray-200">
-        <table className="w-full border-collapse">
-          <thead className="bg-gray-800 text-white">
-            <tr>
-              <th className="px-6 py-3 text-left">Employee Name</th>
-              <th className="px-6 py-3 text-left">Checkin</th>
-              <th className="px-6 py-3 text-left">CheckOut</th>
-              <th className="px-6 py-3 text-left">Total Hours</th>
-              <th className="px-6 py-3 text-left">Status</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-300">
-            {attendance?.map((employee) => (
-              <tr key={employee._id} className={`hover:bg-gray-100 transition-colors `}>
-                <td className="px-6 py-4 text-gray-700">name</td>
-                <td className="px-6 py-4 text-gray-700">{employee.checkin}</td>
-                <td className="px-6 py-4 text-gray-700">{employee.checkout}</td>
-                <td className="px-6 py-4 text-gray-700">{employee.totalHours}</td>
-                <td className={`px-6 py-4 font-medium rounded-lg flex items-center ${statusConfig[employee.status]?.bg}`}>
-                  {statusConfig[employee.status]?.icon}
-                  {employee.status}
-                </td>
-              </tr>
-            ) || [])}
-          </tbody>
-        </table>
-      </div>
-    </section>
-  </div>
-  </div>
-  )
-}
+    <div className="min-h-screen flex flex-col items-center py-10 px-4">
+      <div className="max-w-6xl w-full">
+          {/* Search Bar */}
+          <div className="relative w-60">
+            <input
+              className="w-full py-2 px-4 pl-10 bg-gray-100 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+              type="text"
+              placeholder="Search..."
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+          </div>
+        <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div className="bg-transparent rounded-lg px-6 py-4 flex justify-between items-center w-[100%]">
+          <h2 className="text-3xl font-bold text-blue-500 text-nowrap">📅 Attendance Records</h2>
+          
+        </div>
+          <h1 className="text-lg font-semibold text-gray-600 text-nowrap">{dateTime}</h1>
+        </div>
 
-export default Attandance
+        <div className="bg-white shadow-lg rounded-xl overflow-hidden border border-blue-200">
+          <table className="w-full table-auto">
+            <thead className="bg-blue-400 text-white">
+              <tr>
+                <th className="px-6 py-4 text-left">Employee Name</th>
+                <th className="px-6 py-4 text-left">Check-in</th>
+                <th className="px-6 py-4 text-left">Check-out</th>
+                <th className="px-6 py-4 text-left">Total Hours</th>
+                <th className="px-6 py-4 text-left">Status</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-blue-100">
+            {attendance?.filter(employee => 
+                search.toLowerCase() === '' ? employee : 
+                (employee.status && employee.status.toLowerCase().includes(search.toLowerCase()))
+              ).map((employee) =>    (
+                <tr key={employee._id} className="hover:bg-blue-100 transition-colors">
+                  <td className="px-6 py-4 text-gray-700 font-medium">{employee.name || "N/A"}</td>
+                  <td className="px-6 py-4 text-gray-700">{employee.checkin || "--"}</td>
+                  <td className="px-6 py-4 text-gray-700">{employee.checkout || "--"}</td>
+                  <td className="px-6 py-4 text-gray-700">{employee.totalHours || "--"}</td>
+                  <td className="px-6 py-4">
+                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${statusConfig[employee.status]?.bg}`}>
+                      {statusConfig[employee.status]?.icon}
+                      {employee.status || "N/A"}
+                    </span>
+                  </td>
+                </tr>
+              )) || (
+                <tr>
+                  <td colSpan="5" className="text-center py-4 text-gray-500">No attendance data available.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      <Attandance/>
+      </div>
+    </div>
+  );
+};
+
+export default Attendance;

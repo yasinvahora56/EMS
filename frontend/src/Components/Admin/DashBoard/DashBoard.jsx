@@ -1,27 +1,43 @@
 import React, { useEffect, useState } from "react";
 import { FaUser, FaMoneyCheckAlt } from "react-icons/fa";
 import { MdPendingActions, MdWork, MdAddTask, MdTask, MdDeleteForever } from "react-icons/md";
+import { BACKEND_URL, token } from "../../../config/config";
 
 const DashBoard = () => {
   const [newTask, setNewTask] = useState("");
   const [adminTask, setAdminTask] = useState([]);
   const [newTaskPriority, setNewTaskPriority] = useState("Select");
   const [tasks, setTasks] = useState([]);
+  const [employeeCount, setEmployeeCount] = useState(0);
+  const [pendingLeavesCount, setPendingLeavesCount] = useState(0);
+  const [leaveData, setLeaveData] = useState([]);
 
-  const token = localStorage.getItem("jwtToken");
-  const API_URL = "http://localhost:8080";
-
+  // Dynamic dashboard data using state variables
   const dashboardData = [
-    { type: "Employees", number: "7", icon: <FaUser size={20} />, color: "indigo" },
-    { type: "Pending Leaves", number: "4", icon: <MdPendingActions size={20} />, color: "teal" },
-    { type: "Departments", number: "3", icon: <MdWork size={20} />, color: "rose" },
-    { type: "Total Salary", number: "$20,000", icon: <FaMoneyCheckAlt size={20} />, color: "amber" },
+    { 
+      type: "Employees", 
+      number: employeeCount, 
+      icon: <FaUser size={20} />, 
+      color: "indigo",
+    },
+    { 
+      type: "Pending Leaves", 
+      number: pendingLeavesCount, 
+      icon: <MdPendingActions size={20} />, 
+      color: "teal",
+    },
+    { 
+      type: "Total Salary", 
+      number: "$20,000", 
+      icon: <FaMoneyCheckAlt size={20} />, 
+      color: "amber" 
+    },
   ];
 
   const handleAddTask = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${API_URL}/task/create`, {
+      const response = await fetch(`${BACKEND_URL}/task/create`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -39,7 +55,8 @@ const DashBoard = () => {
       setTasks((prevTasks) => [...prevTasks, saveTask]);
       setNewTask("");
       setNewTaskPriority("Select");
-      // getAdminTasks(); // Refresh the task list
+      // Refresh the task list
+      getAdminTasks();
 
     } catch (error) {
       console.error("Error adding task:", error);
@@ -48,7 +65,7 @@ const DashBoard = () => {
 
   const getAdminTasks = async () => {
     try {
-      const response = await fetch(`${API_URL}/task/adminTask`, {
+      const response = await fetch(`${BACKEND_URL}/task/adminTask`, {
         method: "GET",
         headers: {
           "content-type": "application/json",
@@ -69,9 +86,64 @@ const DashBoard = () => {
     getAdminTasks();
   }, []);
 
+  const fetchAllEmployee = async () => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/employee/`, {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      });
+      const data = await response.json();
+      
+      if (response.ok && data.employeeData) {
+        // Set the employee count based on the actual data
+        setEmployeeCount(data.employeeData.length);
+        console.log("All employee data:", data);
+      }
+    } catch (error) {
+      console.log("Error During Fetch Employee Data", error);
+    }
+  }
+
+  useEffect(() => {
+    fetchAllEmployee();
+  }, []);
+
+  const fetchAllLeaveData = async () => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/leave/get`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok && data.leaves) {
+        setLeaveData(data.leaves);
+        
+        // Count pending leaves
+        const pendingCount = data.leaves.filter(leave => 
+          leave.status === "Pending"
+        ).length;
+        
+        setPendingLeavesCount(pendingCount);
+      }
+    } catch (error) {
+      console.error("Error fetching leave data:", error);
+    }
+  }
+
+  useEffect(() => {
+    fetchAllLeaveData();
+  }, []);
+ 
   const handleDeleteTask = async (taskId) => {
     try {
-      const response = await fetch(`${API_URL}/task/delete/${taskId}`, {
+      const response = await fetch(`${BACKEND_URL}/task/delete/${taskId}`, {
         method: "DELETE",
         headers: {
           "content-type": "application/json",
@@ -146,6 +218,19 @@ const DashBoard = () => {
     }
   };
 
+  const handleCardClick = (type) => {
+    switch (type) {
+      case "Employees":
+        window.location.href = "/admin/employee";
+        break;
+      case "Pending Leaves":
+        window.location.href = "/admin/leave";
+        break;
+      default:
+        break;
+    }
+  }
+
   return (
     <div className="max-w-7xl mx-auto p-8 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
       <h1 className="text-3xl font-bold text-gray-800 mb-8 border-b pb-4 border-gray-200">Admin Dashboard</h1>
@@ -153,7 +238,8 @@ const DashBoard = () => {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {dashboardData.map((card, index) => (
-          <div 
+          <button onClick={() => handleCardClick(card.type)} key={index}>
+            <div 
             key={index} 
             className={`flex items-center justify-between p-6 rounded-lg shadow-lg border-l-8 transition-all duration-300  ${getCardColors(card.color)}`}
           >
@@ -165,6 +251,7 @@ const DashBoard = () => {
               {card.icon}
             </div>
           </div>
+          </button>
         ))}
       </div>
       
