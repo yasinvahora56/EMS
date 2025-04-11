@@ -1,25 +1,30 @@
 import mongoose from "mongoose";
-const schema = mongoose.Schema
+const { Schema } = mongoose;
 
-const payrollSchema = new schema({
+const payrollSchema = new Schema({
     name: {
         type: String,
         required: true,
     },
+    employeeId: {
+        type: String,
+        required: true,
+        ref: "User",
+    },
     salary: {
-        type: String,
+        type: Number,
         required: true,
     },
-    Allowance: {
-        type: String,
-        required: true,
+    allowance: {
+        type: Number,
+        default: 0,
     },
-    Deduction: {
-        type: String,
-        required: true,
+    deduction: {
+        type: Number,
+        default: 0,
     },
     total: {
-        type: String,
+        type: Number,
         required: true,
     },
     status: {
@@ -31,7 +36,9 @@ const payrollSchema = new schema({
         type: Date,
         default: Date.now,
     },
+}, {
+    timestamps: true 
 });
 
 const payrollModel = mongoose.model("Payroll", payrollSchema);
-export default payrollModel
+export default payrollModel;
