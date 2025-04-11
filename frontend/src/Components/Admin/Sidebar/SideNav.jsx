@@ -43,9 +43,7 @@ const SideNav = ({ toggleSidebar }) => {
   };
 
   const logOutHandle = (e) => {
-      localStorage.removeItem('jwtToken')
-      localStorage.removeItem('id')
-      localStorage.removeItem('role')
+      localStorage.clear()
       handleError('Admin Logout')
       setTimeout(() => {
         navigate('/login')

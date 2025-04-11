@@ -64,8 +64,7 @@ const SideBar = () => {
   }, []);
 
   const logOutHandle = (e) => {
-    localStorage.removeItem('jwtToken')
-    localStorage.removeItem('name')
+    localStorage.clear()
     handleError('User Logout')
     setTimeout(() => {
       navigate('/login')
