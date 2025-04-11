@@ -125,6 +125,7 @@ const Attendance = () => {
             <table className="w-full table-auto">
               <thead className="bg-blue-400 text-white">
                 <tr>
+                  <th className="px-6 py-4 text-left">No.</th>
                   <th className="px-6 py-4 text-left">Employee Name</th>
                   <th className="px-6 py-4 text-left">Check-in</th>
                   <th className="px-6 py-4 text-left">Check-out</th>
@@ -134,8 +135,9 @@ const Attendance = () => {
               </thead>
               <tbody className="divide-y divide-blue-100">
                 {filteredAttendance && filteredAttendance.length > 0 ? (
-                  filteredAttendance.map((employee) => (
+                  filteredAttendance.map((employee, index) => (
                     <tr key={employee._id} className="hover:bg-blue-100 transition-colors">
+                      <td className="px-6 py-4 text-gray-700 font-medium">{index + 1}</td>
                       <td className="px-6 py-4 text-gray-700 font-medium">{employee.name || "N/A"}</td>
                       <td className="px-6 py-4 text-gray-700">{employee.checkin || "--"}</td>
                       <td className="px-6 py-4 text-gray-700">{employee.checkout || "--"}</td>
