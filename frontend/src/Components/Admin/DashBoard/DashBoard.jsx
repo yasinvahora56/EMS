@@ -21,17 +21,24 @@ const DashBoard = () => {
       color: "indigo",
     },
     { 
+      type: "On Time", 
+      number: "2", 
+      icon: <FaMoneyCheckAlt size={20} />, 
+      color: "amber" 
+    },
+    { 
+      type: "Present Today", 
+      number: "2", 
+      icon: <FaMoneyCheckAlt size={20} />, 
+      color: "" 
+    },
+    { 
       type: "Pending Leaves", 
       number: pendingLeavesCount, 
       icon: <MdPendingActions size={20} />, 
       color: "teal",
     },
-    { 
-      type: "Total Salary", 
-      number: "$20,000", 
-      icon: <FaMoneyCheckAlt size={20} />, 
-      color: "amber" 
-    },
+    
   ];
 
   const handleAddTask = async (e) => {
@@ -232,9 +239,8 @@ const DashBoard = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-8 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
+    <div className="max-w-7xl mx-auto p-8 min-h-screen">
       <h1 className="text-3xl font-bold text-gray-800 mb-8 border-b pb-4 border-gray-200">Admin Dashboard</h1>
-      
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {dashboardData.map((card, index) => (

@@ -59,23 +59,20 @@ export const getEmployeeAttendance = async (req, res) => {
         let date;
         
         if (dateParam) {
-            // Create a date object from the ISO string
             date = new Date(dateParam);
         } else {
             date = new Date();
         }
         
         console.log("Selected Date:", date);
-        
-        // Ensure date is valid
         if (isNaN(date.getTime())) {
             return res.status(400).json({ message: "Invalid date format" });
         }
         
-        date.setHours(0, 0, 0, 0); // start of the day (00:00:00)
+        date.setHours(0, 0, 0, 0);
         
         const tomorrow = new Date(date);
-        tomorrow.setDate(tomorrow.getDate() + 1); // start of next day (exclusive)
+        tomorrow.setDate(tomorrow.getDate() + 1);
 
         const employeeData = await AttandanceSchema.find({
             checkin: {
