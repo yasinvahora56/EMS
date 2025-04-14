@@ -55,7 +55,6 @@ export const deleteEmployee = async (req, res) => {
 
 export const getEmployeeAttendance = async (req, res) => {
     try {
-        // Properly parse the date from the query parameter
         const dateParam = req.query.date;
         let date;
         
