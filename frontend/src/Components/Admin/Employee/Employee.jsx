@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Search, Mail, Phone, MapPin, Briefcase, Calendar, Filter } from "lucide-react";
 import { Link } from "react-router-dom";
 import { BACKEND_URL, token } from '../../../config/config';
+import AddEmployeeBtn from './addEmployeeBtn.jsx'
 
 const Employee = () => {
   const [employeeData, setEmployeeData] = useState([]);
@@ -149,15 +150,15 @@ const Employee = () => {
     setEmployeeData(filteredData);
   };
   
-  // Reset all filters
-  const resetFilters = () => {
-    setFilters({
-      course: '',
-      status: ''
-    });
-    setSearch('');
-    setEmployeeData(originalData);
-  };
+  // // Reset all filters
+  // const resetFilters = () => {
+  //   setFilters({
+  //     course: '',
+  //     status: ''
+  //   });
+  //   setSearch('');
+  //   setEmployeeData(originalData);
+  // };
   
   // Handle filter changes
   const handleFilterChange = (filterType, value) => {
@@ -226,12 +227,13 @@ const Employee = () => {
               </div>
               
               {/* Reset Filters Button */}
-              <button
+              {/* <button
                 className="px-3 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-md"
                 onClick={resetFilters}
               >
                 Reset
-              </button>
+              </button> */}
+              <AddEmployeeBtn/>
             </div>
           </div>
         </div>
@@ -467,5 +469,7 @@ const Employee = () => {
     </>
   );
 };
+
+// https://preview--sleek-employee-view.lovable.app/
 
 export default Employee;
