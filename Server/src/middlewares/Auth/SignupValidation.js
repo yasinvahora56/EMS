@@ -2,13 +2,11 @@ import joi from "joi"
 
 const SignupValidation = (req, res, next) => {
     const schema = joi.object({
-        name: joi.string().min(2).max(20).required(),
+        employeeName: joi.string().min(3).max(30).required(),
+        department: joi.string().valid("Designing", "Development", "Social Media").required(),
         email: joi.string().email().required(),
-        gender: joi.string().min(4).max(20).required(),
-        course: joi.string().min(2).max(10).required(),
-        joindate: joi.string().required(),
-        designation: joi.string().min(3).max(15).required(),
-        password: joi.string().min(6).max(10).required()
+        phone: joi.string().pattern(/^[0-9]{10}$/).required(),
+        password: joi.string().min(6).max(10)
     })
     
     const {error} = schema.validate(req.body)

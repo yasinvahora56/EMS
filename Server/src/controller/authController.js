@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt"
-import UserModel from "../model/UserModel.js"
+import EmployeeModel from "../model/employeeModel.js"
 import jwt from "jsonwebtoken"
 
 export const login = async (req, res) => {
@@ -7,7 +7,7 @@ export const login = async (req, res) => {
     const { email, password } = req.body;
 
     // Find user
-    const user = await UserModel.findOne({ email });
+    const user = await EmployeeModel.findOne({ email });
     if (!user) {
       return res.status(401).json({ message: "User not found", success: false });
     }
@@ -46,32 +46,31 @@ export const login = async (req, res) => {
 
 export const signup = async (req, res) => {
     try {
-        const {name, email, gender, course, joindate, designation, password} = req.body
-        const user = await UserModel.findOne({ email })
+        const {employeeName, department, email,phone} = req.body
+        const password  = "123456"
+        const user = await EmployeeModel.findOne({ email })
         if (user) {
             return res.status(409)
                 .json({message: "User Alredy Exist", success: false })
         }
-        const userModel = new UserModel({
-            name, 
+        const employeeModel = new EmployeeModel({
+          employeeName,
+            department,
             email, 
-            gender, 
-            course, 
-            joindate,
-            designation, 
+            phone,
             password
         })
-        userModel.password = await bcrypt.hash(password, 10)
+        employeeModel.password = await bcrypt.hash(password, 10)
         
-        res.status(201)
+        await employeeModel.save()
+        return res.status(201)
             .json({
                 message: "Signup Successfully", success:true
             })
-        await userModel.save()
     } catch (error) {
-        res.status(500)
+        return res.status(500)
             .json({
-                message: "Internal Server Error", success:false
+                message: "Internal Server Error", success:false, error: error.message
             })
     }
 }

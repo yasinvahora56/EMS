@@ -1,12 +1,12 @@
 import AttandanceSchema from "../model/AttandanceModel.js";
 import leaveModel from "../model/leaveModel.js";
-import UserModel from "../model/UserModel.js"
+import EmployeeModel from "../model/employeeModel.js"
 
 // get all employee
 
 export const getAllEmployee = async (req, res) => {
     try{
-        const employeeData = await UserModel.find().select("-password");
+        const employeeData = await EmployeeModel.find().select("-password");
         if(!employeeData){
             return res.status(404).json({message: "No Employee Found"});
         }
@@ -27,7 +27,7 @@ export const getEmployee = async(req, res) => {
         if(!employeeId){
         return res.status(404).json({message: "Id Require"});
         }
-        const fetchEmployeeData = await UserModel.find({ _id: employeeId }).select("-password -__v")
+        const fetchEmployeeData = await EmployeeModel.find({ _id: employeeId }).select("-password -__v")
         // console.log(fetchEmployeeData)
         if(!fetchEmployeeData){
             return res.status(404).json({message: "No Employee Found"});
@@ -45,7 +45,7 @@ export const deleteEmployee = async (req, res) => {
         if(!id){
             return res.status(404).json({message: "Id Require"});
         }
-        await UserModel.findByIdAndDelete(id)
+        await EmployeeModel.findByIdAndDelete(id)
         return res.status(200)
             .json({message: "Employee Deleted Successfully"})
     } catch (error) {

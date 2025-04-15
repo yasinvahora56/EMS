@@ -1,12 +1,56 @@
 import React, { useState } from 'react';
+import { handleError } from '../../../../utils';
 
 const AddEmployeeBtn = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [value, setValue] = useState("1");
+  const [employeeInfo, setEmployeeInfo] = useState({
+    department:["Select","Designing", "Development", "Social Media"],
+    employeeName : "",
+    email : "",
+    phone : "",
+    });
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
+
+  const handleSubmit = async (e) => {
+      e.preventDefault();
+      const {
+        employeeName, department, email,phone
+      } = employeeInfo;
+      
+      if (!employeeName || !department || !email || !phone) {
+        return handleError("Please fill all fields");
+      }
+      
+        try {
+          const url = "http://localhost:8080/auth/signup"
+          const response = await fetch (url, {
+            method : "POST",
+            headers: {
+              'Content-Type':'application/json'
+            },
+            body: JSON.stringify(employeeInfo)
+          })
+          const result = await response.json()
+          const { success, message, error } = result
+          if (success) {
+            handleSuccess(message);
+          } else if (error) {
+            if (error.details) {
+              handleError(error.details); // Show backend validation error
+            }else if(!success){
+              handleError(message)
+            } else {
+              handleError("Please try again.")
+            }
+          }
+        } catch (error) {
+          handleError(error.message || "An unexpected error occurred")
+        }
+    }
 
 
 
@@ -35,7 +79,13 @@ const AddEmployeeBtn = () => {
     setValue(e.target.value);
   };
 
-  const hanleSubmit = () => {}
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEmployeeInfo(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  }
 
   return (
     <div>
@@ -54,6 +104,7 @@ const AddEmployeeBtn = () => {
           <div className="bg-white rounded-xl shadow-2xl max-w-6xl w-full max-h-screen overflow-y-auto">
             <div className="p-6 border-b flex justify-between items-center bg-gray-50">
               <h2 className="text-2xl font-bold text-gray-800">Add New Employee</h2>
+          <h1 className='text-red-600'>Password will be 123456 byDefault Employee Must be Change lattere</h1>
               <button 
                 onClick={toggleModal}
                 className="text-gray-500 hover:text-gray-700 focus:outline-none"
@@ -64,7 +115,7 @@ const AddEmployeeBtn = () => {
               </button>
             </div>
             
-            <form className="p-6" onSubmit={hanleSubmit}>
+            <form className="p-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* Personal Information */}
                 <div className="space-y-6">
@@ -74,34 +125,41 @@ const AddEmployeeBtn = () => {
                     <div className="space-y-2">
                       <label htmlFor="name" className="block text-sm font-medium text-gray-700">Full Name</label>
                       <input
-                        type="text"
-                        id="name"
-                        name="name"
+                        type="text"  
+                        id="employeeName"
+                        name="employeeName"
+                        value={employeeInfo.employeeName}
+                        onChange={handleChange}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                         placeholder="John Doe"
                       />
                     </div>
                     
                     <div className="space-y-2">
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email Address</label>
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email Address<span className='text-red-500'>*</span></label>
                       <input
                         type="email"
                         id="email"
                         name="email"
+                        value={employeeInfo.email}
+                        onChange={handleChange}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                         placeholder="john@example.com"
+                        required
                       />
                     </div>
                     
                     <div className="space-y-2">
-                      <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone Number</label>
+                      <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone Number <span className='text-red-500'>*</span></label>
                       <input 
                         type="tel" 
                         id="phone" 
                         name="phone" 
-                        pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+                        value={employeeInfo.phone}
+                        onChange={handleChange}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                         placeholder="123-456-7890"
+                        required
                       />
                     </div>
                     
@@ -161,16 +219,17 @@ const AddEmployeeBtn = () => {
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <label htmlFor="department" className="block text-sm font-medium text-gray-700">Department</label>
+                      <label htmlFor="department" className="block text-sm font-medium text-gray-700">Department<span className='bg-red-500'>*</span></label>
                       <select 
                         name="department" 
                         id="department" 
-                        onChange={handleSelect}
+                        onChange={handleChange}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                       >
-                        {departments.map((option) => (
-                          <option key={option.value} value={option.value}>{option.label}</option>
-                        ))}
+                        <option value={"Select"} readOnly>Select</option>
+                        <option value={"Designing"}>Designing</option>
+                        <option value={"Social Media"}>Social Media</option>
+                        <option value={"Development"}>Development</option>
                       </select>
                     </div>
                     
@@ -196,7 +255,7 @@ const AddEmployeeBtn = () => {
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                       >
                         {managers.map((select) => (
-                          <option key={select.value} value={select.value}>{select.name}</option>
+                          <option key={select.value} value={select.value} >{select.name}</option>
                         ))}
                       </select>
                     </div>
