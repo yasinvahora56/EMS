@@ -1,5 +1,5 @@
 import { createLeaveRequest, deleteLeaveRequest, getAllLeaveRequests, getLeaveRequest, updateLeaveRequest } from "../controller/leaveController.js";
-import { fetchEmployeeId } from "../middlewares/Validation/fetchEmployeeId.js";
+import { fetchEmployeeId } from "../middlewares/Validation/FetchEmployeeId.js";
 import express from "express";
 
 const router = express.Router()
