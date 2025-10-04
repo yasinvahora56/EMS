@@ -37,6 +37,18 @@ mongoose.connect(URL)
 
 const PORT = process.env.PORT || 4000
 
+app.get("/", (req, res) => {
+    res.send("API is working")
+})
+
+app.get("/health", (req, res) => {
+    res.send({
+        process: process.uptime(),         // Server uptime in seconds
+        date: new Date().toISOString(),    // Current date and time (ISO format)
+        message: "Health Checkpoint ✅"
+    });
+});
+
 
 app.listen(PORT, () => {
     console.log(`Server is Running on Port ${PORT}`)
