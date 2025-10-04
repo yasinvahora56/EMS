@@ -6,7 +6,7 @@ import {
     getAttendanceRecords, 
     startBreak
 } from '../controller/attendanceController.js';
-import {fetchEmployeeId} from '../middlewares/Validation/fetchEmployeeId.js';
+import {fetchEmployeeId} from '../middlewares/Validation/FetchEmployeeId.js';
 
 const routes = express.Router();
 
