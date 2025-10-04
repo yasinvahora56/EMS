@@ -3,7 +3,7 @@ import express from "express"
 import cors from "cors"
 import bodyParser from "body-parser"
 import mongoose from "mongoose";
-import authRouter from "./Routes/AuthRouter.js";
+import authRouter from "./Routes/authRoute.js";
 import attendanceRouter from "./Routes/attendanceRoute.js"
 import taskRouter from "./Routes/taskRoutes.js"
 import profileRouter from "./Routes/profileRoute.js"
