@@ -18,7 +18,7 @@ const UserDashBoard = () => {
 
   const token = localStorage.getItem("jwtToken") || sessionStorage.getItem("jwtToken");
 
-  const API_URL = "http://localhost:8080";
+  const API_URL = "https://ems-pq48.onrender.com";
 
   // Fetch current status on load
   useEffect(() => {

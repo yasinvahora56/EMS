@@ -10,7 +10,7 @@ const Salary = () => {
   // Fetch salary data from backend
   const fetchSalaryData = async () => {
     try {
-      const response = await fetch("http://localhost:8080/payroll", {
+      const response = await fetch("https://ems-pq48.onrender.com/payroll", {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'

@@ -26,7 +26,7 @@ const AddEmployeeBtn = () => {
       }
       
         try {
-          const url = "http://localhost:8080/auth/signup"
+          const url = "https://ems-pq48.onrender.com/auth/signup"
           const response = await fetch (url, {
             method : "POST",
             headers: {

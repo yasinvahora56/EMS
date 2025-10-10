@@ -45,7 +45,7 @@ const Payroll = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch('http://localhost:8080/payroll');
+      const response = await fetch('https://ems-pq48.onrender.com/payroll');
       if (!response.ok) throw new Error(`Error ${response.status}`);
       const data = await response.json();
       setSalaryPaid(data);
@@ -59,7 +59,7 @@ const Payroll = () => {
 
   const fetchAllEmployees = async () => {
     try {
-      const res = await fetch("http://localhost:8080/employee");
+      const res = await fetch("https://ems-pq48.onrender.com/employee");
       if (!res.ok) throw new Error("Failed to fetch employees");
       const result = await res.json();
       const data = result.employeeData; // Make sure API sends { employeeData: [...] }
@@ -74,7 +74,7 @@ const Payroll = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch('http://localhost:8080/payroll/create', {
+      const response = await fetch('https://ems-pq48.onrender.com/payroll/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payrollData),
@@ -128,7 +128,7 @@ const Payroll = () => {
   // ✅ NEW: Call PATCH /payroll/update/:id to update status
   const handleApproval = async (payrollId, newStatus) => {
     try {
-      const response = await fetch(`http://localhost:8080/payroll/update/${payrollId}`, {
+      const response = await fetch(`https://ems-pq48.onrender.com/payroll/update/${payrollId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
