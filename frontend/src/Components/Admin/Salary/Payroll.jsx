@@ -60,7 +60,7 @@ const Payroll = () => {
 
   const fetchAllEmployees = async () => {
     try {
-      const res = await fetch(`${BACKEND_URL}/employees`);
+      const res = await fetch(`${BACKEND_URL}/employee`);
       if (!res.ok) throw new Error("Failed to fetch employees");
       const result = await res.json();
       const data = result.employeeData; // Make sure API sends { employeeData: [...] }
