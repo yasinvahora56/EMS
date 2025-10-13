@@ -5,7 +5,7 @@
 // const UserProfile = () => {
 //     const [isModalOpen, setIsModalOpen] = useState(false);
 //     const [userData, setUserData] = useState({
-//             employeeName : "",
+//             name : "",
 //             email: "",
 //             phone: "",
 //             gender : ["male", "female", "other"],
@@ -35,7 +35,7 @@
 //             const data = await response.json();
 //             if (response.ok) {
 //                 setUserData({
-//                     employeeName: data.employeeData.employeeName || 'Guest',
+//                     name: data.employeeData.name || 'Guest',
 //                     email: data.employeeData.email || 'Not Available',
 //                     phone: data.employeeData.phone || 'Not Available',
 //                     gender: data.employeeData.gender || 'Not Available',
@@ -210,8 +210,8 @@
 //                       <label htmlFor="name" className="block text-sm font-medium text-gray-700">Full Name</label>
 //                       <input
 //                         type="text"  
-//                         id="employeeName"
-//                         name="employeeName"
+//                         id="name"
+//                         name="name"
 //                         value={editData.name}
 //                                     onChange={(e) => setEditData({ ...editData, [e.target.name]: e.target.value})}
 //                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
@@ -471,7 +471,7 @@ import ProfileEditModal from './ProfileEditModal';
 const UserProfile = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [userData, setUserData] = useState({
-        employeeName: "",
+        name: "",
         email: "",
         phone: "",
         gender: "",
@@ -503,29 +503,32 @@ const UserProfile = () => {
                     "Authorization": `Bearer ${token}`,
                 },
             });
+            console.log("Fetch tokem:", token);
 
-            const data = await response.json();
-            if (response.ok) {
-                const employeeData = data.employeeData || {};
-                setUserData({
-                    employeeName: employeeData.employeeName || 'Guest',
-                    email: employeeData.email || 'Not Available',
-                    phone: employeeData.phone || 'Not Available',
-                    gender: employeeData.gender || 'Not Available',
-                    address: employeeData.address || 'Not Available',
-                    city: employeeData.city || 'Not Available',
-                    pincode: employeeData.pincode || 'Not Available',
-                    department: employeeData.department || 'Not Available',
-                    designation: employeeData.designation || 'Not Available',
-                    manager: employeeData.manager || 'Not Available',
-                    joinDate: employeeData.joindate || 'Not Available',
-                    degreeName: employeeData.degreeName || 'Not Available',
-                    graduationYear: employeeData.graduationYear || 'Not Available',
-                    collageName: employeeData.collageName || 'Not Available',
-                    skills: employeeData.skills || 'Not Available',
-                    role: employeeData.role || 'Not Available',
-                });
-            } else {
+            // In UserProfile.jsx, update the fetchUserProfile function:
+const data = await response.json();
+if (response.ok) {
+    const employeeData = data.employeeData || {};
+    setUserData({
+        name: employeeData.name || 'Guest',
+        email: employeeData.email || 'Not Available',
+        phone: employeeData.phone || 'Not Available',
+        gender: employeeData.gender || 'Not Available',
+        address: employeeData.address || 'Not Available',
+        city: employeeData.city || 'Not Available',
+        pincode: employeeData.pincode || 'Not Available',
+        department: employeeData.department || 'Not Available',
+        designation: employeeData.designation || 'Not Available',
+        manager: employeeData.manager || 'Not Available',
+        joinDate: employeeData.joinDate || 'Not Available', // Changed from joindate
+        degreeName: employeeData.degreeName || 'Not Available',
+        graduationYear: employeeData.graduationYear || 'Not Available',
+        collageName: employeeData.collageName || 'Not Available',
+        skills: employeeData.skills || 'Not Available',
+        role: employeeData.employee?.role || employeeData.role || 'Not Available', // Handle populated data
+    });
+}
+ else {
                 setError(data.message || "Error fetching profile data");
                 console.error("Error fetching profile:", data.message);
             }

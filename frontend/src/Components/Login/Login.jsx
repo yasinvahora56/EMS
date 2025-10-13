@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "./Images/Login.png";
 import { Lock, Tag } from 'lucide-react';
 import { useState } from "react";
+import { BACKEND_URL } from "../../config/config";
 import { handleError, handleSuccess } from "../../../utils";
 
 const Login = () => {
@@ -29,7 +30,7 @@ const Login = () => {
       }
       
         try {
-          const url = "https://ems-pq48.onrender.com/auth/login"
+          const url = `${BACKEND_URL}/auth/login`
           const response = await fetch (url, {
             method : "POST",
             headers: {

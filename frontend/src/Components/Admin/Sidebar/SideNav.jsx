@@ -22,6 +22,7 @@ const SideNav = ({ toggleSidebar }) => {
         }
       })
       const data = await response.json()
+      console.log("Not found Admin Data", data)
       if(response.ok){
         setAdminData({
           name: data.employeeData.name || "Guest",

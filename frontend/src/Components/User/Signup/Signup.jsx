@@ -2,17 +2,20 @@ import { Link, useNavigate } from "react-router-dom"
 import logo from "./image/Login.png"
 import { User, Lock, Building, Mail, Calendar, Tag, UserCircle } from 'lucide-react'
 import { useState } from "react"
+import { BACKEND_URL } from "../../../config/config"
 import { handleError, handleSuccess } from "../../../../utils"
+import { Phone } from "lucide-react"
 
 const Signup = () => {
   const [signupInfo, setSignupInfo] = useState({
-    name: "",
+   name: "",
     email: "",
     gender: "",
     course: "",
     joindate: "",
-    designation: "",
+    department: "",
     password: "",
+    phone: ""
   });
   const navigate = useNavigate();
   const handleChange = (e) => {
@@ -24,17 +27,17 @@ const Signup = () => {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+     e.preventDefault();
     const {
-      name, email, gender, course, joindate, designation, password,
+      name, email, gender, course, joindate, department, password
     } = signupInfo;
     
-    if (!name || !email || !gender || !course || !joindate || !designation || !password) {
+    if (!name || !email || !gender || !course || !joindate || !department || !password ) {
       return handleError("Please fill all fields");
     }
     
       try {
-        const url = "https://ems-pq48.onrender.com/auth/signup"
+        const url = `${BACKEND_URL}/auth/signup`
         const response = await fetch (url, {
           method : "POST",
           headers: {
@@ -106,17 +109,34 @@ const Signup = () => {
                   />
                 </div>
 
+                 <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Phone className="h-5 w-5 text-indigo-400" />
+                  </div>
+                  <input
+                    type="tel"
+                    name="phone"
+                    placeholder="Phone Number"
+                    value={signupInfo.phone}
+                    onChange={handleChange}
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg"
+                  />
+                </div>
+
                 {/* Row with Gender, Course, Join Date */}
                 <div className="flex space-x-2">
                   <div className="w-1/3">
-                    <input
-                      type="text"
-                      name="gender"
-                      placeholder="Gender"
-                      value={signupInfo.gender}
-                      onChange={handleChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-300 focus:border-indigo-500 transition duration-300"
-                    />
+                    <select
+                    name="gender"
+                    value={signupInfo.gender}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
                   </div>
                   <div className="w-1/3">
                     <input
@@ -139,21 +159,24 @@ const Signup = () => {
                   </div>
                 </div>
 
-                {/* Row Designation */}
+                {/* Row department */}
               
                   <div className="w-1/2">
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Building className="h-5 w-5 text-indigo-400" />
-                      </div>
-                      <input
-                        type="text"
-                        name="designation"
-                        placeholder="Designation"
-                        value={signupInfo.designation}
-                        onChange={handleChange}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-300 focus:border-indigo-500 transition duration-300"
-                      />
+                      <Building className="h-5 w-5 text-indigo-400" />
+                    </div>
+                    <select
+                      name="department"
+                      value={signupInfo.department}
+                      onChange={handleChange}
+                      className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg"
+                    >
+                      <option value="">Select Department</option>
+                      <option value="Designing">Designing</option>
+                      <option value="Development">Development</option>
+                      <option value="Social Media">Social Media</option>
+                    </select>
                     </div>
                   </div>
               

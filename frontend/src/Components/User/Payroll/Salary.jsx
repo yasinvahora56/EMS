@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Search } from "lucide-react";
+import { BACKEND_URL } from '../../../config/config';
 
 const Salary = () => {
   const [search, setSearch] = useState('');
@@ -10,7 +11,7 @@ const Salary = () => {
   // Fetch salary data from backend
   const fetchSalaryData = async () => {
     try {
-      const response = await fetch("https://ems-pq48.onrender.com/payroll", {
+      const response = await fetch(`${BACKEND_URL}/payroll`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'

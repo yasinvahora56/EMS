@@ -95,7 +95,7 @@ const DashBoard = () => {
 
   const fetchAllEmployee = async () => {
     try {
-      const response = await fetch(`${BACKEND_URL}/employee/`, {
+      const response = await fetch(`${BACKEND_URL}/employee`, {
         method: "GET",
         headers: {
           "content-type": "application/json",

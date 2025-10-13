@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt"
 import EmployeeModel from "../model/employeeModel.js"
+import EmployeeDetailModel from "../model/employeeDetailModel.js";
 import jwt from "jsonwebtoken"
 
 export const login = async (req, res) => {
@@ -14,6 +15,8 @@ export const login = async (req, res) => {
 
     // Compare passwords
     const matchPassword = await bcrypt.compare(password, user.password);
+    console.log("Password match:",user.password,  password);
+
     if (!matchPassword) {
       return res.status(401).json({ message: "Invalid credentials", success: false });
     }
@@ -45,32 +48,62 @@ export const login = async (req, res) => {
 
 
 export const signup = async (req, res) => {
-    try {
-        const {employeeName, department, email,phone} = req.body
-        const password  = "123456"
-        const user = await EmployeeModel.findOne({ email })
-        if (user) {
-            return res.status(409)
-                .json({message: "User Alredy Exist", success: false })
-        }
-        const employeeModel = new EmployeeModel({
-          employeeName,
-            department,
-            email, 
-            phone,
-            password
-        })
-        employeeModel.password = await bcrypt.hash(password, 10)
-        
-        await employeeModel.save()
-        return res.status(201)
-            .json({
-                message: "Signup Successfully", success:true
-            })
-    } catch (error) {
-        return res.status(500)
-            .json({
-                message: "Internal Server Error", success:false, error: error.message
-            })
+  try {
+    const { name, department, email, gender, course, joindate } = req.body;
+    const password = "123456";
+    
+    // Check if user already exists
+    const user = await EmployeeModel.findOne({ email });
+    if (user) {
+      return res.status(409).json({ 
+        message: "User Already Exists", 
+        success: false 
+      });
     }
-}
+
+    // Create base employee with hashed password
+    const hashedPassword = await bcrypt.hash(password, 10);
+    
+    const employeeModel = new EmployeeModel({
+      name,
+      department,
+      email,
+      gender,
+      joindate,
+      password: hashedPassword,
+      role: 'employee' // Default role
+    });
+    
+    const savedEmployee = await employeeModel.save();
+    console.log("Created employee:", savedEmployee._id);
+
+    // Create EmployeeDetail document with initial data
+    const employeeDetail = new EmployeeDetailModel({
+      employee: savedEmployee._id,
+      name,
+      email,
+      gender,
+      department,
+      joinDate: joindate,
+      degreeName: course || "",
+      role: 'employee'
+    });
+
+    await employeeDetail.save();
+    console.log("Created employee detail for:", savedEmployee._id);
+
+    return res.status(201).json({
+      message: "Signup Successfully", 
+      success: true,
+      employeeId: savedEmployee._id
+    });
+    
+  } catch (error) {
+    console.error("Signup error:", error);
+    return res.status(500).json({
+      message: "Internal Server Error", 
+      success: false, 
+      error: error.message
+    });
+  }
+};

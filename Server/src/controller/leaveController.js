@@ -9,6 +9,7 @@ export const createLeaveRequest = async (req, res) => {
                 .json({ message: "All Feilds are Require", error: error.message})
         }
         const leave = new leaveModel({
+            employeeId: req.employeeId,
             name,
             startDate,
             endDate,
@@ -21,6 +22,7 @@ export const createLeaveRequest = async (req, res) => {
     } catch (error) {
         res.status(400)
             .json({message: "Error During Create Leave Request", error: error.message})
+            console.log(error)
     }
 }
 export const getAllLeaveRequests = async (req, res) => {

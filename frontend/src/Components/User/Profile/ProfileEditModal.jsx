@@ -26,12 +26,12 @@ const ProfileEditModal = ({ editData, handleChange, handleSubmit, toggleModal })
                             
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <label htmlFor="employeeName" className="block text-sm font-medium text-gray-700">Full Name</label>
+                                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">Full Name</label>
                                     <input
                                         type="text"  
-                                        id="employeeName"
-                                        name="employeeName"
-                                        value={editData.employeeName || ''}
+                                        id="name"
+                                        name="name"
+                                        value={editData.name || ''}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                                         placeholder="John Doe"

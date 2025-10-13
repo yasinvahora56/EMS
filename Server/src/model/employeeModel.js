@@ -1,34 +1,35 @@
-import mongoose from "mongoose"
-const schema = mongoose.Schema
+import mongoose from "mongoose";
+const schema = mongoose.Schema;
 
 const employeeSchema = new schema({
-    employeeName:{
-        type: String,
-        required: true
-    },
-    email:{
-    type: String,
-    required: true
-    },
-    phone:{
-    type: String,
-    required: true
-    },
-    department:{
-    type: String,
-    required: true
-    },
+  name: { 
+    type: String, 
+    required: true 
+  },
+  email: { 
+    type: String, 
+    required: true, 
+    unique: true 
+  },
+  password: { 
+    type: String, 
+    required: true 
+  },
+  gender: { 
+    type: String 
+  },
+  department: { 
+    type: String 
+  },
+  joindate: { 
+    type: Date 
+  },
+  role: { 
+    type: String, 
+    enum: ['employee', 'admin', 'manager'],
+    default: 'employee' 
+  }
+}, { timestamps: true });
 
-    role: { 
-        type: String,
-        default: "employee",
-        enum:["admin", "employee"]
-    },
-    password:{
-    type: String,
-    required: true
-    },
-})
-
-const EmployeeModel = mongoose.model('users', employeeSchema)
-export default EmployeeModel
+const EmployeeModel = mongoose.model('employee', employeeSchema);
+export default EmployeeModel;

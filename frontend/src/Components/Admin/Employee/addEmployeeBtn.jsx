@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { handleError } from '../../../../utils';
-
+import { BACKEND_URL } from '../../../config/config';
 const AddEmployeeBtn = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [value, setValue] = useState("1");
   const [employeeInfo, setEmployeeInfo] = useState({
     department:["Select","Designing", "Development", "Social Media"],
-    employeeName : "",
+    name : "",
     email : "",
     phone : "",
     });
@@ -18,15 +18,15 @@ const AddEmployeeBtn = () => {
   const handleSubmit = async (e) => {
       e.preventDefault();
       const {
-        employeeName, department, email,phone
+        name, department, email,phone
       } = employeeInfo;
       
-      if (!employeeName || !department || !email || !phone) {
+      if (!name || !department || !email || !phone) {
         return handleError("Please fill all fields");
       }
       
         try {
-          const url = "https://ems-pq48.onrender.com/auth/signup"
+          const url = `${BACKEND_URL}api/auth/signup`
           const response = await fetch (url, {
             method : "POST",
             headers: {
@@ -126,9 +126,9 @@ const AddEmployeeBtn = () => {
                       <label htmlFor="name" className="block text-sm font-medium text-gray-700">Full Name</label>
                       <input
                         type="text"  
-                        id="employeeName"
-                        name="employeeName"
-                        value={employeeInfo.employeeName}
+                        id="name"
+                        name="name"
+                        value={employeeInfo.name}
                         onChange={handleChange}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                         placeholder="John Doe"
