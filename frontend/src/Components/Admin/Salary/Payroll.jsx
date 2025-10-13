@@ -43,10 +43,10 @@ const Payroll = () => {
   };
 
   const fetchAllPayroll = async () => {
-    setLoading(true);
-    setError(null);
+  
+    console.log(`${BACKEND_URL}/payroll`);
     try {
-      const response = await fetch`${BACKEND_URL}/payroll`;
+      const response = await fetch(`${BACKEND_URL}/payroll`);
       if (!response.ok) throw new Error(`Error ${response.status}`);
       const data = await response.json();
       setSalaryPaid(data);
