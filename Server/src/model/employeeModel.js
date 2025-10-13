@@ -18,6 +18,9 @@ const employeeSchema = new schema({
   gender: { 
     type: String 
   },
+  designation: { 
+    type: String 
+  },
   department: { 
     type: String 
   },
