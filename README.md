@@ -65,14 +65,14 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 ### **Prerequisites**
 * Node.js (v14 or later)
-* npm or yarn
-* MongoDB (local instance or a cloud service like MongoDB Atlas)
+* npm
+* MongoDB (MongoDB Atlas)
 
 ### **Installation**
 
 1.  **Clone the repository:**
     ```sh
-    git clone [https://github.com/yasinvahora56/EMS.git](https://github.com/yasinvahora56/EMS.git)
+    git clone https://github.com/yasinvahora56/EMS.git
     ```
 2.  **Navigate to the project directory:**
     ```sh
@@ -114,7 +114,7 @@ The application should now be running, with the frontend accessible at `http://l
 
 ## ⚙️ Usage
 
-You can use the following default credentials for testing the application:
+You can use the following default credentials for testing the application onine:
 
 * **Admin Login:**
     * **Email:** `admin@gmail.com`
