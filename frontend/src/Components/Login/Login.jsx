@@ -140,9 +140,12 @@ const Login = () => {
                       Sign Up
                     </Link>
                   </p>
+                  <p className="text-gray-600 mt-4">employee@gmail.com--123456</p>
+                <p className="text-gray-600">admin@gmail.com--123456</p>
                 </div>
-                <p>employee@gmail.com--123456</p>
-                <p>admin@gmail.com--123456</p>
+                
+                
+                
               </form>
             </div>
           </div>
