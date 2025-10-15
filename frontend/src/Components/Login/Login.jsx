@@ -141,6 +141,8 @@ const Login = () => {
                     </Link>
                   </p>
                 </div>
+                <p>employee@gmail.com--123456</p>
+                <p>admin@gmail.com--123456</p>
               </form>
             </div>
           </div>
