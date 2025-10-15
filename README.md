@@ -84,10 +84,10 @@ Follow these instructions to get a copy of the project up and running on your lo
     cd server
     npm install
     ```
-4.  **Install client dependencies:**
+4.  **Install frontend dependencies:**
     ```sh
-    # Navigate to client directory from the root
-    cd ../client
+    # Navigate to frontend directory from the root
+    cd ../frontend
     npm install
     ```
 5.  **Set up environment variables:**
@@ -100,14 +100,15 @@ Follow these instructions to get a copy of the project up and running on your lo
 6.  **Run the application:**
     * **Start the backend server** (from the `server` directory):
         ```sh
+        npm run dev
         npm start
         ```
-    * **Start the frontend client** (from the `client` directory in a new terminal):
+    * **Start the frontend frontend** (from the `frontend` directory in a new terminal):
         ```sh
-        npm start
+        npm run dev
         ```
 
-The application should now be running, with the client accessible at `http://localhost:8080`.
+The application should now be running, with the frontend accessible at `http://localhost:8080`.
 
 ---
 
