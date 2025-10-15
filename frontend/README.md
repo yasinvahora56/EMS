@@ -29,23 +29,24 @@ A comprehensive Employee Management System designed to streamline HR processes a
 ### **Authentication**
 Create your account or log in as an Admin or Employee.
 
-*Welcome Back - Login*
-![Login Page](https://i.imgur.com/eBnoFh8.png)
-
 *Create Account - Sign Up*
-![Create Account Page](https://i.imgur.com/rS2U1Jm.png)
+![Create Account Page](/frontend/image/Signup_page.png)
+
+*Welcome Back - Login*
+![Login Page](/frontend/image/Login_page.png)
+
 
 ### **Admin Dashboard**
 The central hub for admins to manage the entire workforce.
 
 *Admin Dashboard View*
-![Admin Dashboard](https://i.imgur.com/wP6Y8q8.png)
+![Admin Dashboard](/frontend/image/admin_dashboard.png)
 
 ### **Employee Dashboard**
 A personalized dashboard for employees to track their daily activities.
 
 *Employee Dashboard View*
-![Employee Dashboard](https://i.imgur.com/97yL2Xz.png)
+![Employee Dashboard](/frontend/image/user_dashboard.png)
 
 ---
 
@@ -106,7 +107,7 @@ Follow these instructions to get a copy of the project up and running on your lo
         npm start
         ```
 
-The application should now be running, with the client accessible at `http://localhost:3000`.
+The application should now be running, with the client accessible at `http://localhost:8080`.
 
 ---
 
