@@ -29,7 +29,7 @@ const SideBar = () => {
       if(response.ok){
         setUserData({
           name: data.employeeData.name || "Guest",
-          designation: data.employeeData.department || "Not Available"
+          designation: data.employeeData.designation || "Not Available"
         })
       }
     } catch (error) {

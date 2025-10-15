@@ -63,6 +63,7 @@ export const getMyProfile = async (req, res) => {
         name: baseEmployee.name,
         email: baseEmployee.email,
         gender: baseEmployee.gender,
+        designation: baseEmployee.designation,
         department: baseEmployee.department,
         joinDate: baseEmployee.joindate,
         role: baseEmployee.role

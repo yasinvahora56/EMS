@@ -43,10 +43,10 @@ const Payroll = () => {
   };
 
   const fetchAllPayroll = async () => {
-    setLoading(true);
-    setError(null);
+  
+    console.log(`${BACKEND_URL}/payroll`);
     try {
-      const response = await fetch`${BACKEND_URL}/payroll`;
+      const response = await fetch(`${BACKEND_URL}/payroll`);
       if (!response.ok) throw new Error(`Error ${response.status}`);
       const data = await response.json();
       setSalaryPaid(data);
@@ -60,7 +60,7 @@ const Payroll = () => {
 
   const fetchAllEmployees = async () => {
     try {
-      const res = await fetch(`${BACKEND_URL}/employees`);
+      const res = await fetch(`${BACKEND_URL}/employee`);
       if (!res.ok) throw new Error("Failed to fetch employees");
       const result = await res.json();
       const data = result.employeeData; // Make sure API sends { employeeData: [...] }
